@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.admission.Step5Controller"
+            styleClass="root-pane" prefWidth="1100" prefHeight="720">
+
+    <top>
+        <VBox styleClass="wizard-header">
+            <Label text="Vertex Academy — Admission Portal" styleClass="wizard-school-name"/>
+            <HBox alignment="CENTER" spacing="0" styleClass="progress-bar-row">
+                <Label text="1 Landing"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="2 Parents"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="3 Student"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="4 Medical"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="5 Checkout" styleClass="prog-step prog-active"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <!-- Main form -->
+            <HBox spacing="32" styleClass="form-card" alignment="TOP_CENTER">
+                <padding><Insets top="32" right="60" bottom="32" left="60"/></padding>
+
+                <!-- Left: Application Summary -->
+                <VBox spacing="14" minWidth="300" styleClass="summary-card">
+                    <Label text="📋  Application Summary" styleClass="form-section-title"/>
+                    <Separator/>
+                    <Label fx:id="summaryName"   text="Student: —" styleClass="summary-item"/>
+                    <Label fx:id="summaryGrade"  text="Grade: —"   styleClass="summary-item"/>
+                    <Label fx:id="summaryParent" text="Guardian: —" styleClass="summary-item"/>
+                    <Separator/>
+                    <Label text="Application Fee" styleClass="field-label"/>
+                    <Label text="$200.00 USD" styleClass="price-tag"/>
+                    <Label text="One-time non-refundable processing fee" styleClass="hint-label"/>
+                </VBox>
+
+                <!-- Right: Payment Form -->
+                <VBox spacing="16" HBox.hgrow="ALWAYS">
+                    <Label text="💳  Secure Payment Gateway" styleClass="form-section-title"/>
+                    <Label text="Your payment is processed securely. Card data is not stored."
+                           styleClass="form-section-subtitle"/>
+
+                    <Label text="Card Number" styleClass="field-label"/>
+                    <TextField fx:id="cardNumberField" promptText="1234 5678 9012 3456"
+                               styleClass="premium-field"/>
+
+                    <HBox spacing="16">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Expiry Date" styleClass="field-label"/>
+                            <TextField fx:id="expiryField" promptText="MM/YY" styleClass="premium-field"/>
+                        </VBox>
+                        <VBox spacing="6">
+                            <Label text="CVV" styleClass="field-label"/>
+                            <TextField fx:id="cvvField" promptText="123" maxWidth="100"
+                                       styleClass="premium-field"/>
+                        </VBox>
+                    </HBox>
+
+                    <Button fx:id="payButton" text="Pay $200.00 →" onAction="#handlePay"
+                            styleClass="btn-pay" maxWidth="Infinity"/>
+
+                    <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+
+                    <Separator/>
+
+                    <Button fx:id="finalizeButton" text="🎓  Finalize &amp; Submit Application"
+                            onAction="#handleFinalize" styleClass="btn-primary" maxWidth="Infinity"
+                            disable="true"/>
+                </VBox>
+            </HBox>
+
+            <!-- Success overlay (hidden until finalize) -->
+            <VBox fx:id="successOverlay" alignment="CENTER" spacing="20"
+                  styleClass="success-overlay" visible="false">
+                <Label text="🎉" style="-fx-font-size:64px;"/>
+                <Label text="Application Submitted Successfully!" styleClass="success-title"/>
+                <Label fx:id="applicationIdLabel" text="Application ID: #—" styleClass="success-subtitle"/>
+                <Label text="You will receive a confirmation email within 2 business days."
+                       styleClass="success-hint" wrapText="true" textAlignment="CENTER"/>
+                <Button text="Go to Dashboard →" onAction="#goToDashboard" styleClass="btn-primary"/>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="wizard-footer" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="16" right="40" bottom="16" left="40"/></padding>
+            <Button text="← Back" onAction="#goBack" styleClass="btn-secondary"/>
+        </HBox>
+    </bottom>
+</BorderPane>

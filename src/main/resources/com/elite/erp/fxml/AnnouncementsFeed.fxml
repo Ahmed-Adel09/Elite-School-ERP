@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<!--
+  AnnouncementsFeed.fxml
+  Visible to ALL roles: Student, Parent, Teacher, Nurse, Accountant, Librarian.
+  Admin sees an extra "Post Announcement" panel at the top.
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.announcements.AnnouncementsController"
+            styleClass="feed-root"
+            prefWidth="1100" prefHeight="760">
+
+    <!-- ═══ HEADER ═══ -->
+    <top>
+        <VBox styleClass="feed-header" spacing="4">
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <Label text="📢" style="-fx-font-size:28px;"/>
+                <VBox>
+                    <Label text="Elite School Announcements" styleClass="feed-title"/>
+                    <Label text="Stay up-to-date with school news, events and notices." styleClass="feed-subtitle"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔄  Refresh" onAction="#loadAnnouncements" styleClass="btn-secondary"/>
+                <Button text="🚪  Back" onAction="#goBack" styleClass="btn-secondary"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <center>
+        <HBox spacing="20">
+            <padding><Insets top="20" right="28" bottom="20" left="28"/></padding>
+
+            <!-- Feed Column -->
+            <ScrollPane HBox.hgrow="ALWAYS" fitToWidth="true"
+                        styleClass="scroll-pane-dark" VBox.vgrow="ALWAYS">
+                <VBox fx:id="feedBox" spacing="16">
+                    <padding><Insets right="8" bottom="12"/></padding>
+                    <Label text="Loading announcements..." styleClass="hint-label"/>
+                </VBox>
+            </ScrollPane>
+
+            <!-- Admin Post Panel (shown only if role=ADMIN) -->
+            <VBox fx:id="adminPostPanel" minWidth="320" maxWidth="350" spacing="14"
+                  styleClass="ann-post-box" visible="false" managed="false">
+
+                <Label text="📝  Post an Announcement" styleClass="ann-post-title"/>
+                <Separator style="-fx-background-color: rgba(201,168,76,0.3);"/>
+
+                <HBox spacing="10">
+                    <Label text="Title:" styleClass="field-label" minWidth="60"/>
+                    <TextField fx:id="annTitleField" promptText="Enter announcement title..." HBox.hgrow="ALWAYS" styleClass="premium-field"/>
+                </HBox>
+
+                <!-- New Target Audience Field -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Audience:" styleClass="field-label" minWidth="60"/>
+                    <ComboBox fx:id="targetAudienceCombo" promptText="Select Target Audience" prefWidth="250" styleClass="premium-combo"/>
+                </HBox>
+
+                <Label text="Content" styleClass="field-label"/>
+                <TextArea fx:id="annContentArea" promptText="Write your announcement here..."
+                          prefRowCount="6" wrapText="true"
+                          style="-fx-control-inner-background: #162130; -fx-text-fill: white;
+                                 -fx-border-color: rgba(201,168,76,0.3); -fx-border-width: 1;
+                                 -fx-border-radius: 6; -fx-background-radius: 6;
+                                 -fx-prompt-text-fill: rgba(255,255,255,0.35);"/>
+
+                <Label text="Attach Media (Optional)" styleClass="field-label"/>
+                <VBox fx:id="mediaDropZone" alignment="CENTER" prefHeight="80" spacing="4"
+                      style="-fx-border-color: #C9A84C; -fx-border-style: dashed; -fx-border-width: 1.5;
+                             -fx-border-radius: 8; -fx-background-radius: 8; -fx-cursor: hand;
+                             -fx-background-color: transparent;">
+                    <Label text="📎  Drag image/video here" style="-fx-text-fill: #94A3B8; -fx-font-size:13px;"/>
+                    <Label text="(or click to browse)" style="-fx-text-fill: #64748B; -fx-font-size:11px;"/>
+                </VBox>
+                <Label fx:id="mediaPathLabel" text="No media selected" styleClass="ann-card-media-label"/>
+
+                <Button text="📢  Post Announcement" onAction="#postAnnouncement"
+                        styleClass="btn-primary" maxWidth="Infinity"/>
+
+                <Label fx:id="postStatusLabel" text="" wrapText="true" styleClass="hint-label"/>
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>

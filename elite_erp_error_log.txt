@@ -1,0 +1,27 @@
+Elite ERP - Bug Fixes & Solutions Log
+======================================
+
+1. FXML Navigation Error (InstaPayStep.fxml:81)
+- Error: LoadException caused by variable parsing failure.
+- Reason: The UI text "$200.00 USD" contained a literal dollar sign. The JavaFX FXML parser strictly reserves the "$" character for resolving variables and namespaces. It attempted to find a variable named "200.00" and failed, instantly crashing the view load.
+- Solution: Escaped the dollar sign or replaced it with the text "USD 200.00" to prevent FXML expression parsing.
+
+2. FXML Navigation Error (CreditCardView.fxml:58)
+- Error: LoadException caused by invalid Insets attribute.
+- Reason: The FXML file used `<Insets all="22"/>`. The JavaFX 21 FXML builder maps attributes to constructor arguments or setter properties, and "all" is not properly mapped for the padding property in this context, causing a parse failure.
+- Solution: Replaced the `all` attribute with explicit directional padding: `<Insets top="22" right="22" bottom="22" left="22"/>`.
+
+3. Email Delivery Crash (AdminDashboardController)
+- Error: Unhandled exception type InterruptedException (Bypassed by IDE to runtime).
+- Reason: The background task simulated a network delay using `Thread.sleep(200);`. This method throws a checked `InterruptedException` which must be handled. The task's `call()` method only declared `throws MessagingException`. The IDE compiler swallowed the compile error and injected a runtime exception instead.
+- Solution: Updated the `call()` signature to `throws Exception` so it properly delegates all checked exceptions to the `setOnFailed` handler.
+
+4. Account Setup Silent Failure (Email Not Found)
+- Error: "Set Password" claims email not found after application was approved.
+- Reason: The SQLite database `users` table was originally designed with a `password TEXT NOT NULL` constraint. The new workflow created "Pending" user accounts with `NULL` passwords using an `INSERT OR IGNORE` query. SQLite silently rejected the inserts because they violated the NOT NULL constraint, meaning the users were never actually saved to the database.
+- Solution: Removed the `NOT NULL` constraint from the `password` column schema and wiped the database file so the table rebuilds correctly.
+
+5. Email Service Crash (UnknownFormatConversionException)
+- Error: Conversion = ';'
+- Reason: The HTML email template contained the CSS rule `width:100%;`. Because Java's `String.formatted()` uses the `%` character to identify formatting variables, it saw `%` followed immediately by `;`. Semicolon is not a valid format type (like %s or %d), so the Java formatter threw an UnknownFormatConversionException and crashed the email dispatch.
+- Solution: Escaped the percent sign by doubling it `width:100%%;` so the Java formatter treats it as a literal percent symbol.

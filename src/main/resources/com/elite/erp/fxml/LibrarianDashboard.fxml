@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.librarian.LibrarianDashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="800" stylesheets="@../css/Premium.css">
+
+    <top>
+        <HBox styleClass="header-bar" spacing="20" alignment="CENTER_LEFT">
+            <padding><Insets top="15" right="30" bottom="15" left="30"/></padding>
+            <Label text="📚 Elite Librarian Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🚪 Logout" onAction="#logout" styleClass="btn-secondary"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            
+            <!-- INVENTORY TAB (CRUD) -->
+            <Tab text="Book Inventory">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    
+                    <HBox spacing="15">
+                        <TextField fx:id="titleField" promptText="Book Title" HBox.hgrow="ALWAYS" styleClass="premium-field"/>
+                        <TextField fx:id="authorField" promptText="Author" HBox.hgrow="ALWAYS" styleClass="premium-field"/>
+                        <TextField fx:id="categoryField" promptText="Category" HBox.hgrow="ALWAYS" styleClass="premium-field"/>
+                    </HBox>
+                    <HBox spacing="15">
+                        <ComboBox fx:id="typeCombo" promptText="Book Type" styleClass="premium-combo"/>
+                        <TextField fx:id="stockField" promptText="Total Stock" styleClass="premium-field"/>
+                        <Button text="Browse File (Digital)" onAction="#browseFile" styleClass="btn-secondary"/>
+                        <Label fx:id="filePathLabel" text="No file selected"/>
+                    </HBox>
+                    <HBox spacing="15">
+                        <Button text="➕ Add Book" onAction="#addBook" style="-fx-background-color: #4CD97B; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        <Button text="❌ Delete Selected" onAction="#deleteBook" style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    </HBox>
+                    
+                    <TableView fx:id="booksTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                        <columns>
+                            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                            <TableColumn fx:id="colTitle" text="Title" prefWidth="250"/>
+                            <TableColumn fx:id="colAuthor" text="Author" prefWidth="200"/>
+                            <TableColumn fx:id="colCat" text="Category" prefWidth="150"/>
+                            <TableColumn fx:id="colType" text="Type" prefWidth="100"/>
+                            <TableColumn fx:id="colStock" text="Stock (Total/Avail)" prefWidth="150"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <!-- LOAN DESK TAB -->
+            <Tab text="Loan Desk (Pending Reservations)">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Physical Book Reservations" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                    
+                    <HBox spacing="15">
+                        <Button text="✅ Approve/Handover" onAction="#approveLoan" style="-fx-background-color: #4CD97B; -fx-text-fill: #0A1628; -fx-font-weight: bold;"/>
+                    </HBox>
+                    
+                    <TableView fx:id="loansTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                        <columns>
+                            <TableColumn fx:id="colLoanId" text="Loan ID" prefWidth="80"/>
+                            <TableColumn fx:id="colBookTitle" text="Book Title" prefWidth="250"/>
+                            <TableColumn fx:id="colStudent" text="Student Name" prefWidth="200"/>
+                            <TableColumn fx:id="colReqDate" text="Request Date" prefWidth="150"/>
+                            <TableColumn fx:id="colStatus" text="Status" prefWidth="150"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <!-- ANALYTICS TAB (FXGL) -->
+            <Tab text="Library Analytics">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Top 5 Borrowed Categories" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                    <StackPane fx:id="fxglChartPane" VBox.vgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-background-radius: 8;">
+                        <!-- FXGL embedded here -->
+                    </StackPane>
+                </VBox>
+            </Tab>
+            
+        </TabPane>
+    </center>
+</BorderPane>

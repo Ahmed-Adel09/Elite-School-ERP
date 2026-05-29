@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.parent.ParentDashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="780" stylesheets="@../css/Premium.css">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="240" spacing="4">
+            <padding><Insets top="24" right="12" bottom="24" left="12"/></padding>
+
+            <Label text="⭐" style="-fx-font-size:36px; -fx-alignment:CENTER;" maxWidth="Infinity"/>
+            <Label text="VERTEX ACADEMY" styleClass="sidebar-title" alignment="CENTER" maxWidth="Infinity"/>
+            <Label text="Parent Portal" styleClass="sidebar-subtitle" alignment="CENTER" maxWidth="Infinity"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <Button text="🏠  Home &amp; Academics"  styleClass="sidebar-btn sidebar-active" maxWidth="Infinity"/>
+            <Button text="💰  Elite Finances"      styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="🏥  Health Records"      styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="📢  Announcements"       onAction="#openAnnouncements" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            
+            <Separator styleClass="sidebar-sep"/>
+            <Button text="➕  Register Child" onAction="#handleRegisterChild" styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <VBox VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout" onAction="#logout" styleClass="sidebar-logout" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            
+            <!-- HOME TAB -->
+            <Tab text="Dashboard &amp; Academics">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <Label fx:id="welcomeLabel" text="Welcome, Parent" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Select Child:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                        <ComboBox fx:id="studentSwitcher" onAction="#handleStudentSwitch" prefWidth="200" style="-fx-background-color: white; -fx-border-color: #C9A84C; -fx-border-radius: 4;"/>
+                    </HBox>
+                    
+                    <Label fx:id="studentNameLabel" text="Child: Loading..." style="-fx-font-size: 16px; -fx-text-fill: #1A3560;"/>
+                    <Separator/>
+                    
+                    <Label text="Academic Progress (FXGL Chart)" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                    <Label fx:id="noCoursesLabel" text="No active courses found." style="-fx-text-fill: #FF6B6B; -fx-font-size: 14px;" visible="false" managed="${noCoursesLabel.visible}"/>
+                    
+                    <StackPane fx:id="chartPane" prefHeight="400" prefWidth="600" style="-fx-background-color: #0A1628; -fx-background-radius: 8px;">
+                        <Label text="Loading Analytics..." style="-fx-text-fill: white;"/>
+                    </StackPane>
+                </VBox>
+            </Tab>
+            
+            <!-- FINANCES TAB -->
+            <Tab text="Finances &amp; Events">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    
+                    <HBox spacing="30">
+                        <VBox spacing="10" style="-fx-background-color: #f8fafc; -fx-padding: 20; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-background-radius: 8;" HBox.hgrow="ALWAYS">
+                            <Label text="Elite Credits Balance" style="-fx-font-size: 16px; -fx-text-fill: #64748B;"/>
+                            <Label fx:id="balanceLabel" text="USD 0.00" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #4CD97B;"/>
+                            <Button text="💳 Top-Up Credits" onAction="#handleTopUp" style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold;"/>
+                        </VBox>
+                        
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Available School Events" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                            <ListView fx:id="eventsListView" prefHeight="150" style="-fx-border-color: #e2e8f0;"/>
+                            <Button text="🎓 Enroll in Selected Event" onAction="#handleEnrollEvent" style="-fx-background-color: #1A3560; -fx-text-fill: white;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- ANNOUNCEMENTS TAB -->
+            <Tab text="School News">
+                <VBox spacing="15">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Latest Announcements" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.parent.ParentDashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="780" stylesheets="@../css/Premium.css">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="240" spacing="4">
+            <padding><Insets top="24" right="12" bottom="24" left="12"/></padding>
+
+            <Label text="⭐" style="-fx-font-size:36px; -fx-alignment:CENTER;" maxWidth="Infinity"/>
+            <Label text="VERTEX ACADEMY" styleClass="sidebar-title" alignment="CENTER" maxWidth="Infinity"/>
+            <Label text="Parent Portal" styleClass="sidebar-subtitle" alignment="CENTER" maxWidth="Infinity"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <Button text="🏠  Home &amp; Academics"  styleClass="sidebar-btn sidebar-active" maxWidth="Infinity"/>
+            <Button text="💰  Elite Finances"      styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="🏥  Health Records"      styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="📢  Announcements"       onAction="#openAnnouncements" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            
+            <Separator styleClass="sidebar-sep"/>
+            <Button text="➕  Register Child" onAction="#handleRegisterChild" styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <VBox VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout" onAction="#logout" styleClass="sidebar-logout" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            
+            <!-- HOME TAB -->
+            <Tab text="Dashboard &amp; Academics">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <Label fx:id="welcomeLabel" text="Welcome, Parent" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Select Child:" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                        <ComboBox fx:id="studentSwitcher" onAction="#handleStudentSwitch" prefWidth="200" style="-fx-background-color: white; -fx-border-color: #C9A84C; -fx-border-radius: 4;"/>
+                    </HBox>
+                    
+                    <Label fx:id="studentNameLabel" text="Child: Loading..." style="-fx-font-size: 16px; -fx-text-fill: #1A3560;"/>
+                    <Separator/>
+                    
+                    <Label text="Academic Progress (FXGL Chart)" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                    <Label fx:id="noCoursesLabel" text="No active courses found." style="-fx-text-fill: #FF6B6B; -fx-font-size: 14px;" visible="false" managed="${noCoursesLabel.visible}"/>
+                    
+                    <StackPane fx:id="chartPane" prefHeight="400" prefWidth="600" style="-fx-background-color: #0A1628; -fx-background-radius: 8px;">
+                        <Label text="Loading Analytics..." style="-fx-text-fill: white;"/>
+                    </StackPane>
+
+                    <Label text="Recent Grades &amp; Exam Scores" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                    <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS" prefHeight="200" styleClass="premium-table">
+                        <columns>
+                            <TableColumn fx:id="colGradeDate"    text="Date"    prefWidth="120"/>
+                            <TableColumn fx:id="colGradeSubject" text="Subject / Exam" prefWidth="300"/>
+                            <TableColumn fx:id="colGradeScore"   text="Score"   prefWidth="100"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No grades recorded yet." style="-fx-text-fill: #94A3B8;"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+            </Tab>
+            
+            <!-- FINANCES TAB -->
+            <Tab text="Finances &amp; Events">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    
+                    <HBox spacing="30">
+                        <VBox spacing="10" style="-fx-background-color: #f8fafc; -fx-padding: 20; -fx-border-color: #e2e8f0; -fx-border-radius: 8; -fx-background-radius: 8;" HBox.hgrow="ALWAYS">
+                            <Label text="Elite Credits Balance" style="-fx-font-size: 16px; -fx-text-fill: #64748B;"/>
+                            <Label fx:id="balanceLabel" text="USD 0.00" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #4CD97B;"/>
+                            <Button text="💳 Top-Up Credits" onAction="#handleTopUp" style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold;"/>
+                        </VBox>
+                        
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Available School Events" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                            <ListView fx:id="eventsListView" prefHeight="150" style="-fx-border-color: #e2e8f0;"/>
+                            <Button text="🎓 Enroll in Selected Event" onAction="#handleEnrollEvent" style="-fx-background-color: #1A3560; -fx-text-fill: white;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- ANNOUNCEMENTS TAB -->
+            <Tab text="School News">
+                <VBox spacing="15">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Latest Announcements" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane">
+                        <VBox fx:id="announcementsContainer" spacing="10"/>
+                    </ScrollPane>
+                </VBox>
+            </Tab>
+
+            <!-- E-LIBRARY TAB -->
+            <Tab text="E-Library">
+                <fx:include source="LibraryTab.fxml"/>
+            </Tab>
+
+            <!-- AI GRADE ANALYZER TAB -->
+            <Tab text="🧠 AI Grade Analyzer">
+                <VBox spacing="20">
+                    <padding><Insets top="24" right="30" bottom="24" left="30"/></padding>
+                    <Label text="Vertex AI Grade Analysis Engine"
+                           style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#0A1628;"/>
+                    <Label text="Enter your child's scores (0–100) and click Run Analysis to receive AI-powered college path recommendations."
+                           style="-fx-text-fill:#64748B;" wrapText="true"/>
+
+                    <HBox spacing="24" style="-fx-background-color:#f8fafc; -fx-padding:24; -fx-background-radius:10; -fx-border-color:#e2e8f0; -fx-border-radius:10;">
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+                            <Label text="Mathematics (0–100):" style="-fx-font-weight:bold;"/>
+                            <TextField fx:id="mathField" promptText="e.g. 88" styleClass="premium-field"/>
+
+                            <Label text="Science (0–100):" style="-fx-font-weight:bold;"/>
+                            <TextField fx:id="scienceField" promptText="e.g. 76" styleClass="premium-field"/>
+
+                            <Label text="Languages (0–100):" style="-fx-font-weight:bold;"/>
+                            <TextField fx:id="languageField" promptText="e.g. 65" styleClass="premium-field"/>
+
+                            <Label text="Arts (0–100):" style="-fx-font-weight:bold;"/>
+                            <TextField fx:id="artsField" promptText="e.g. 90" styleClass="premium-field"/>
+
+                            <Button text="🧠 Run Vertex AI Analysis" onAction="#runAiAnalysis"
+                                    style="-fx-background-color:#1A3560; -fx-text-fill:white; -fx-font-size:14px;
+                                           -fx-font-weight:bold; -fx-cursor:hand; -fx-padding:12 28;"/>
+                            <Label fx:id="aiErrorLabel" text="" style="-fx-text-fill:#FF6B6B; -fx-font-weight:bold;"/>
+                        </VBox>
+
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Analysis Report:" style="-fx-font-weight:bold; -fx-font-size:16px;"/>
+                            <TextArea fx:id="analysisOutput" editable="false" wrapText="true"
+                                      VBox.vgrow="ALWAYS" prefHeight="340"
+                                      style="-fx-font-family:monospace; -fx-font-size:13px;
+                                             -fx-background-color:#0A1628; -fx-text-fill:#C9A84C;
+                                             -fx-border-color:#C9A84C; -fx-border-radius:6;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- PRIVATE DMs TAB -->
+            <Tab text="💬 Messages">
+                <VBox spacing="16">
+                    <padding><Insets top="24" right="30" bottom="24" left="30"/></padding>
+                    <Label text="Private Messages to Teachers"
+                           style="-fx-font-size:22px; -fx-font-weight:bold; -fx-text-fill:#0A1628;"/>
+
+                    <HBox spacing="14" alignment="CENTER_LEFT">
+                        <Label text="Send to Teacher:" style="-fx-font-weight:bold;"/>
+                        <ComboBox fx:id="teacherCombo" promptText="Select a Teacher..." prefWidth="280"/>
+                        <Label fx:id="dmStatusLabel" text="" style="-fx-font-weight:bold;"/>
+                    </HBox>
+
+                    <TextArea fx:id="dmHistoryArea" editable="false" wrapText="true"
+                              VBox.vgrow="ALWAYS" prefHeight="320" styleClass="premium-textarea"
+                              promptText="Message history will appear here..."/>
+
+                    <HBox spacing="10">
+                        <TextField fx:id="dmInputField" promptText="Type your private message..."
+                                   HBox.hgrow="ALWAYS" styleClass="premium-field"
+                                   onAction="#sendDm"/>
+                        <Button text="📤 Send" onAction="#sendDm"
+                                style="-fx-background-color:#C9A84C; -fx-text-fill:#0A1628;
+                                       -fx-font-weight:bold; -fx-cursor:hand; prefWidth:100;"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

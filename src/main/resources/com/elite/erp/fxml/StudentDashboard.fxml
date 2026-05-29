@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.student.StudentDashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="780">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="220" spacing="4">
+            <padding><Insets top="24" right="12" bottom="24" left="12"/></padding>
+
+            <Label text="⭐" style="-fx-font-size:36px; -fx-alignment:CENTER;" maxWidth="Infinity"/>
+            <Label text="VERTEX ACADEMY" styleClass="sidebar-title"/>
+            <Label text="Student Portal" styleClass="sidebar-subtitle"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <Button text="🏠  Home"              styleClass="sidebar-btn sidebar-active" maxWidth="Infinity"/>
+            <Button text="📅  My Timetable"      onAction="#showTimetable"  styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="📚  Assignments"       styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="🏅  Grades"            onAction="#showGrades" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="📢  Announcements"     onAction="#openAnnouncements" styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <VBox VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout"            onAction="#logout" styleClass="sidebar-logout" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <VBox spacing="0">
+            <!-- TOP BAR -->
+            <HBox styleClass="dashboard-topbar" alignment="CENTER_LEFT" spacing="20">
+                <padding><Insets top="14" right="28" bottom="14" left="28"/></padding>
+                <Label text="🎓 Student Dashboard" styleClass="topbar-title"/>
+            </HBox>
+
+            <TabPane fx:id="studentTabPane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" style="-fx-background-color: #0A1628;">
+                
+                <!-- DASHBOARD & CALENDAR TAB -->
+                <Tab text="Dashboard &amp; Calendar">
+                    <VBox spacing="20">
+                        <padding><Insets left="24" right="24" top="20" bottom="20"/></padding>
+                        
+                        <Label fx:id="welcomeLabel" text="Welcome to your Student Portal!" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                        
+                        <HBox spacing="18" styleClass="stats-row">
+                            <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                                <Label text="Upcoming Holidays (Egypt &amp; Islamic)" styleClass="stat-label"/>
+                                <ListView fx:id="calendarListView" prefHeight="150" styleClass="premium-table"/>
+                            </VBox>
+                            
+                            <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                                <Label text="Announcements" styleClass="stat-label"/>
+                                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane" prefHeight="150">
+                                    <VBox fx:id="announcementsContainer" spacing="10"/>
+                                </ScrollPane>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <!-- TIMETABLE TAB -->
+                <Tab fx:id="timetableTab" text="📅 My Timetable">
+                    <VBox spacing="16">
+                        <padding><Insets left="24" right="24" top="20" bottom="20"/></padding>
+
+                        <HBox alignment="CENTER_LEFT" spacing="16">
+                            <VBox spacing="4">
+                                <Label text="My Weekly Timetable" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <Label text="Friday &amp; Saturday are school holidays." style="-fx-text-fill: #F5A623; -fx-font-size: 12px;"/>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="timetableHint" text="" style="-fx-text-fill: #94A3B8; -fx-font-size: 12px;"/>
+                        </HBox>
+
+                        <!-- Weekly grid: one column per day (Mon–Thu) -->
+                        <HBox spacing="10" VBox.vgrow="ALWAYS">
+
+                            <!-- Monday -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 14; -fx-background-radius: 10; -fx-min-width: 160;">
+                                <Label text="Monday" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #C9A84C; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                                <Separator style="-fx-background-color: #C9A84C;"/>
+                                <VBox fx:id="monBox" spacing="8" VBox.vgrow="ALWAYS">
+                                    <Label text="No classes" style="-fx-text-fill: #4A5568; -fx-font-size: 11px;"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Tuesday -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 14; -fx-background-radius: 10; -fx-min-width: 160;">
+                                <Label text="Tuesday" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #C9A84C; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                                <Separator style="-fx-background-color: #C9A84C;"/>
+                                <VBox fx:id="tueBox" spacing="8" VBox.vgrow="ALWAYS">
+                                    <Label text="No classes" style="-fx-text-fill: #4A5568; -fx-font-size: 11px;"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Wednesday -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 14; -fx-background-radius: 10; -fx-min-width: 160;">
+                                <Label text="Wednesday" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #C9A84C; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                                <Separator style="-fx-background-color: #C9A84C;"/>
+                                <VBox fx:id="wedBox" spacing="8" VBox.vgrow="ALWAYS">
+                                    <Label text="No classes" style="-fx-text-fill: #4A5568; -fx-font-size: 11px;"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Thursday -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 14; -fx-background-radius: 10; -fx-min-width: 160;">
+                                <Label text="Thursday" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #C9A84C; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                                <Separator style="-fx-background-color: #C9A84C;"/>
+                                <VBox fx:id="thuBox" spacing="8" VBox.vgrow="ALWAYS">
+                                    <Label text="No classes" style="-fx-text-fill: #4A5568; -fx-font-size: 11px;"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Friday — Holiday -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" style="-fx-background-color: #0F1F30; -fx-padding: 14; -fx-background-radius: 10; -fx-min-width: 140; -fx-opacity: 0.55;">
+                                <Label text="Friday" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #FF6B6B; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                                <Separator style="-fx-background-color: #FF6B6B;"/>
+                                <Label text="🏖 Holiday" style="-fx-text-fill: #FF6B6B; -fx-font-size: 14px; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                            </VBox>
+
+                            <!-- Saturday — Holiday -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" style="-fx-background-color: #0F1F30; -fx-padding: 14; -fx-background-radius: 10; -fx-min-width: 140; -fx-opacity: 0.55;">
+                                <Label text="Saturday" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #FF6B6B; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                                <Separator style="-fx-background-color: #FF6B6B;"/>
+                                <Label text="🏖 Holiday" style="-fx-text-fill: #FF6B6B; -fx-font-size: 14px; -fx-alignment: CENTER;" maxWidth="Infinity"/>
+                            </VBox>
+
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <!-- CLASSROOM TAB -->
+                <Tab text="Classroom">
+                    <VBox spacing="20">
+                        <padding><Insets left="24" right="24" top="20" bottom="20"/></padding>
+                        <Label text="Study Materials &amp; Exams" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                        
+                        <HBox spacing="20" VBox.vgrow="ALWAYS">
+                            <!-- Materials List -->
+                            <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                                <Label text="Study Materials (PDFs)" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <ListView fx:id="materialsListView" VBox.vgrow="ALWAYS" styleClass="premium-table"/>
+                                <Button text="Download / Open Selected" onAction="#openMaterial" styleClass="premium-field" style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                            </VBox>
+                            
+                            <!-- Exams List -->
+                            <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                                <Label text="Available Exams" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <ListView fx:id="examsListView" VBox.vgrow="ALWAYS" styleClass="premium-table"/>
+                                <Button text="Start Exam (Lockdown)" onAction="#startExam" styleClass="premium-field" style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <!-- GROUP CHAT TAB -->
+                <Tab text="Class Group Chat">
+                    <VBox spacing="10">
+                        <padding><Insets left="24" right="24" top="20" bottom="20"/></padding>
+
+                        <HBox alignment="CENTER_LEFT" spacing="16">
+                            <VBox spacing="2">
+                                <Label text="Class Group Chat" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <Label text="Teacher messages appear with 🏫 [TEACHER] tag." style="-fx-text-fill: #94A3B8; -fx-font-size: 11px;"/>
+                            </VBox>
+                        </HBox>
+
+                        <TextArea fx:id="chatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS"
+                                  styleClass="premium-textarea" prefHeight="380"/>
+
+                        <HBox spacing="10">
+                            <TextField fx:id="chatInputField" promptText="Type your message here..."
+                                       HBox.hgrow="ALWAYS" styleClass="premium-field" onAction="#sendChatMessage"/>
+                            <Button text="📨 Send" onAction="#sendChatMessage"
+                                    style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 8 16; -fx-background-radius: 6;" prefWidth="90"/>
+                            <Button text="📎 Media" onAction="#uploadChatMedia"
+                                    style="-fx-background-color: #3B82F6; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 8 16; -fx-background-radius: 6;" prefWidth="90"/>
+                            <Button text="🗑 Delete" onAction="#deleteChatMessage"
+                                    style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 8 16; -fx-background-radius: 6;" prefWidth="90"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <!-- GRADES TAB -->
+                <Tab fx:id="gradesTab" text="🏅 Grades">
+                    <VBox spacing="20">
+                        <padding><Insets left="24" right="24" top="20" bottom="20"/></padding>
+                        <Label text="My Academic Grades" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                        
+                        <TableView fx:id="gradesTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                            <columns>
+                                <TableColumn fx:id="colGradeDate"    text="Date"    prefWidth="120"/>
+                                <TableColumn fx:id="colGradeSubject" text="Subject / Exam" prefWidth="300"/>
+                                <TableColumn fx:id="colGradeScore"   text="Score"   prefWidth="100"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="No grades recorded yet." style="-fx-text-fill: #94A3B8;"/>
+                            </placeholder>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <!-- E-LIBRARY TAB -->
+                <Tab text="E-Library">
+                    <fx:include source="LibraryTab.fxml"/>
+                </Tab>
+
+                <!-- MEDICAL CLINIC TAB -->
+                <Tab text="🏥 Clinic">
+                    <fx:include source="StudentClinic.fxml"/>
+                </Tab>
+
+            </TabPane>
+        </VBox>
+    </center>
+</BorderPane>

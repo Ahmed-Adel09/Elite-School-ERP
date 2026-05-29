@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.clinic.NurseDashboardController"
+            styleClass="root-pane" prefWidth="1280" prefHeight="820"
+            stylesheets="@../css/Premium.css">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox styleClass="header-bar" spacing="20" alignment="CENTER_LEFT">
+            <padding><Insets top="14" right="30" bottom="14" left="30"/></padding>
+            <Label text="🏥  Nurse Dashboard — Vertex Academy"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <!-- Live inventory alert banner -->
+            <Label fx:id="inventoryAlertLabel" text="" wrapText="true"
+                   style="-fx-text-fill: #FF6B6B; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+            <Separator orientation="VERTICAL" style="-fx-background-color: rgba(255,255,255,0.2);"/>
+            <Button text="🚪 Logout" onAction="#logout" styleClass="btn-secondary"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ── TAB 1: LIVE ALERTS ── -->
+            <Tab text="🚨 Live Alerts">
+                <VBox spacing="20">
+                    <padding><Insets top="24" right="30" bottom="24" left="30"/></padding>
+                    <Label text="Real-Time Emergency Alerts (Port 9997)"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Connection:" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="connectionStatusLabel" text="⏳ Connecting..."
+                               style="-fx-text-fill: #F5A623; -fx-font-weight: bold;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="🗑️ Clear Alerts" onAction="#clearAlerts"
+                                style="-fx-background-color: #6B7280; -fx-text-fill: white; -fx-cursor: hand;"/>
+                    </HBox>
+
+                    <!-- Toast/Alert feed -->
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" prefHeight="400"
+                                style="-fx-background-color: transparent; -fx-border-color: #e2e8f0;">
+                        <VBox fx:id="alertFeed" spacing="10" style="-fx-padding: 12;"/>
+                    </ScrollPane>
+                </VBox>
+            </Tab>
+
+            <!-- ── TAB 2: STUDENT SEARCH & VISIT LOG ── -->
+            <Tab text="🔍 Student Search &amp; Visit Log">
+                <VBox spacing="20">
+                    <padding><Insets top="24" right="30" bottom="24" left="30"/></padding>
+                    <Label text="Find Student &amp; Log Clinic Visit"
+                           style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+
+                    <!-- Search bar -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <TextField fx:id="searchField" promptText="Search by Name or Student ID..."
+                                   prefWidth="350" styleClass="premium-field"
+                                   onAction="#searchStudent"/>
+                        <Button text="🔍 Search" onAction="#searchStudent"
+                                style="-fx-background-color: #1A3560; -fx-text-fill: white;
+                                       -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    </HBox>
+
+                    <HBox spacing="24" VBox.vgrow="ALWAYS">
+
+                        <!-- LEFT: results + medical profile panel -->
+                        <VBox spacing="14" prefWidth="380">
+                            <Label text="Search Results" style="-fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                            <ListView fx:id="studentResultsList" prefHeight="180" styleClass="premium-table"/>
+
+                            <!-- Read-only medical info -->
+                            <VBox spacing="10" style="-fx-background-color: #F8FAFC; -fx-padding: 16;
+                                                       -fx-border-color: #e2e8f0; -fx-border-radius: 8;
+                                                       -fx-background-radius: 8;">
+                                <Label text="Medical Profile" style="-fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                                <HBox spacing="8">
+                                    <Label text="Blood Type:" style="-fx-font-weight: bold;"/>
+                                    <Label fx:id="nurseBloodLabel" text="—"/>
+                                </HBox>
+                                <HBox spacing="8">
+                                    <Label text="Allergies:" style="-fx-font-weight: bold; -fx-text-fill: #DC2626;"/>
+                                    <Label fx:id="nurseAllergyLabel" text="—" wrapText="true" maxWidth="280"/>
+                                </HBox>
+                                <HBox spacing="8">
+                                    <Label text="Emergency Contact:" style="-fx-font-weight: bold;"/>
+                                    <Label fx:id="nurseEmergencyLabel" text="—"/>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+
+                        <!-- RIGHT: Visit log form -->
+                        <VBox spacing="14" HBox.hgrow="ALWAYS">
+                            <Label text="Log New Clinic Visit" style="-fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+
+                            <Label text="Symptoms / Complaint:" style="-fx-font-weight: bold;"/>
+                            <TextArea fx:id="symptomsField" promptText="Describe the student's symptoms..."
+                                      prefHeight="110" wrapText="true" styleClass="premium-field"/>
+
+                            <Label text="Treatment Given:" style="-fx-font-weight: bold;"/>
+                            <TextArea fx:id="treatmentField" promptText="Describe treatment / medications given..."
+                                      prefHeight="110" wrapText="true" styleClass="premium-field"/>
+
+                            <HBox spacing="12">
+                                <Button text="💾 Save Visit Record" onAction="#saveVisit"
+                                        style="-fx-background-color: #4CD97B; -fx-text-fill: #0A1628;
+                                               -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 24;"/>
+                                <Button text="🗑️ Clear" onAction="#clearVisitForm"
+                                        style="-fx-background-color: #6B7280; -fx-text-fill: white;
+                                               -fx-cursor: hand; -fx-padding: 10 24;"/>
+                            </HBox>
+
+                            <Label fx:id="visitStatusLabel" text=""
+                                   style="-fx-font-weight: bold; -fx-font-size: 13px;"/>
+
+                            <!-- Recent visits for selected student -->
+                            <Label text="Recent Visits for Selected Student:" style="-fx-font-weight: bold;"/>
+                            <TableView fx:id="nurseVisitsTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                                <columns>
+                                    <TableColumn fx:id="nColDate" text="Date" prefWidth="160"/>
+                                    <TableColumn fx:id="nColSymptoms" text="Symptoms" prefWidth="200"/>
+                                    <TableColumn fx:id="nColTreatment" text="Treatment" prefWidth="200"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- ── TAB 3: MEDICAL INVENTORY ── -->
+            <Tab text="💊 Inventory Monitor">
+                <VBox spacing="20">
+                    <padding><Insets top="24" right="30" bottom="24" left="30"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="16">
+                        <Label text="Medical Inventory"
+                               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="inventoryThreadLabel" text="⏳ Monitor starting..."
+                               style="-fx-text-fill: #F5A623; -fx-font-weight: bold;"/>
+                    </HBox>
+
+                    <TableView fx:id="inventoryTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                        <columns>
+                            <TableColumn fx:id="invColItem" text="Item" prefWidth="250"/>
+                            <TableColumn fx:id="invColStock" text="Current Stock" prefWidth="150"/>
+                            <TableColumn fx:id="invColMin" text="Minimum Required" prefWidth="160"/>
+                            <TableColumn fx:id="invColStatus" text="Status" prefWidth="180"/>
+                        </columns>
+                    </TableView>
+
+                    <!-- Quick stock update -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label text="Update Stock — Item:"/>
+                        <ComboBox fx:id="itemCombo" promptText="Select item" prefWidth="220"/>
+                        <Label text="New Stock:"/>
+                        <TextField fx:id="newStockField" promptText="e.g. 10" prefWidth="80"/>
+                        <Button text="✅ Update" onAction="#updateStock"
+                                style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628;
+                                       -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

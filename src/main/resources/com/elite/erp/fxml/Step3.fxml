@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.admission.Step3Controller"
+            styleClass="root-pane" prefWidth="1100" prefHeight="720">
+
+    <top>
+        <VBox styleClass="wizard-header">
+            <Label text="Vertex Academy — Admission Portal" styleClass="wizard-school-name"/>
+            <HBox alignment="CENTER" spacing="0" styleClass="progress-bar-row">
+                <Label text="1 Landing" styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="2 Parents" styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="3 Student" styleClass="prog-step prog-active"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="4 Medical" styleClass="prog-step"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="5 Checkout" styleClass="prog-step"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-transparent">
+            <HBox spacing="28" styleClass="form-card">
+                <padding><Insets top="28" right="60" bottom="28" left="60"/></padding>
+
+                <!-- Left: Photo Upload -->
+                <VBox spacing="12" alignment="TOP_CENTER" minWidth="220">
+                    <Label text="Student Photo" styleClass="field-label"/>
+                    <!-- Fixed StackPane prevents clipping -->
+                    <StackPane fx:id="dropZone" styleClass="drop-zone"
+                               prefWidth="200" prefHeight="200" maxWidth="200" maxHeight="200">
+                        <ImageView fx:id="photoPreview"
+                                   fitWidth="180" fitHeight="180"
+                                   preserveRatio="true"/>
+                        <Label fx:id="dropLabel"
+                               text="📁 Drag &amp; Drop Photo&#10;or Click to Browse"
+                               styleClass="drop-label" wrapText="true" textAlignment="CENTER"/>
+                    </StackPane>
+                    <Button text="Browse Photo" onAction="#browsePhoto" styleClass="btn-secondary" maxWidth="Infinity"/>
+                </VBox>
+
+                <!-- Right: Student fields -->
+                <VBox spacing="14" HBox.hgrow="ALWAYS">
+                    <Label text="Student Profile &amp; Academic History" styleClass="form-section-title"/>
+
+                    <GridPane hgap="20" vgap="12">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <Label text="First Name *" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="firstNameField" promptText="First name" styleClass="premium-field"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+
+                        <Label text="Last Name *" styleClass="field-label" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <TextField fx:id="lastNameField" promptText="Last name" styleClass="premium-field"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label text="Date of Birth" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <DatePicker fx:id="dobPicker" styleClass="premium-field"
+                                    GridPane.columnIndex="0" GridPane.rowIndex="3" maxWidth="Infinity"/>
+
+                        <Label text="Gender *" styleClass="field-label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <ComboBox fx:id="genderCombo" promptText="Select gender" styleClass="premium-combo"
+                                  maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        <Label text="Nationality" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <TextField fx:id="nationalityField" promptText="e.g. British, Emirati" styleClass="premium-field"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+
+                        <Label text="Applying for Year *" styleClass="field-label" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        <ComboBox fx:id="yearCombo" promptText="Select year" styleClass="premium-combo"
+                                  maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                        <Label text="Previous School" styleClass="field-label" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                        <TextField fx:id="prevSchoolField" promptText="School name" styleClass="premium-field"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+
+                        <Label text="Previous GPA / Grade" styleClass="field-label" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                        <TextField fx:id="prevGPAField" promptText="e.g. 3.8 / A+" styleClass="premium-field"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+                        <!-- Student Gmail — spans both columns -->
+                        <Label text="Student Gmail / Email *" styleClass="field-label"
+                               GridPane.columnIndex="0" GridPane.rowIndex="8"
+                               GridPane.columnSpan="2"/>
+                        <TextField fx:id="studentEmailField"
+                                   promptText="student.name@gmail.com  (used for Welcome email on approval)"
+                                   styleClass="premium-field"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="9"
+                                   GridPane.columnSpan="2" maxWidth="Infinity"/>
+                    </GridPane>
+
+                    <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+                </VBox>
+            </HBox>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="wizard-footer" alignment="CENTER_RIGHT" spacing="12">
+            <padding><Insets top="16" right="40" bottom="16" left="40"/></padding>
+            <Button text="← Back" onAction="#goBack" styleClass="btn-secondary"/>
+            <Button text="Continue →" onAction="#goNext" styleClass="btn-primary"/>
+        </HBox>
+    </bottom>
+</BorderPane>

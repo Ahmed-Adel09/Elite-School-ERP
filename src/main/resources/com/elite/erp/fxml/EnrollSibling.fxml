@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elite.erp.presentation.parent.EnrollSiblingController" stylesheets="@../css/Premium.css" prefWidth="600" prefHeight="500">
+    <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+    
+    <top>
+        <VBox spacing="10">
+            <Label text="Enroll a Sibling" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0A1628;"/>
+            <Label text="Your parent details are already pre-filled. Enter the new student's details below." wrapText="true" style="-fx-text-fill: #64748B;"/>
+            <Separator/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="15" alignment="CENTER_LEFT">
+            <padding><Insets top="20" bottom="20"/></padding>
+            
+            <Label text="Parent Details (Auto-filled)" style="-fx-font-weight: bold; -fx-text-fill: #C9A84C;"/>
+            <TextField fx:id="parentEmailField" disable="true" styleClass="form-input"/>
+            <TextField fx:id="parentNameField" disable="true" styleClass="form-input"/>
+
+            <Label text="New Student Details" style="-fx-font-weight: bold; -fx-text-fill: #C9A84C;"/>
+            <TextField fx:id="firstNameField" promptText="Student First Name" styleClass="form-input"/>
+            <TextField fx:id="lastNameField" promptText="Student Last Name" styleClass="form-input"/>
+            
+            <HBox spacing="10">
+                <TextField fx:id="dobField" promptText="YYYY-MM-DD" styleClass="form-input" HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="gradeCombo" promptText="Select Grade" styleClass="form-input" prefWidth="150"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button text="Cancel" onAction="#cancel" style="-fx-background-color: transparent; -fx-text-fill: #64748B; -fx-border-color: #64748B; -fx-border-radius: 4;"/>
+            <Button text="Submit Enrollment" onAction="#submit" styleClass="btn-primary"/>
+        </HBox>
+    </bottom>
+</BorderPane>

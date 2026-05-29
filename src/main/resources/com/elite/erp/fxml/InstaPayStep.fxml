@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.payment.InstaPayController"
+            styleClass="root-pane" prefWidth="1100" prefHeight="720">
+
+    <!-- TOP: Wizard header -->
+    <top>
+        <VBox styleClass="wizard-header">
+            <Label text="Vertex Academy — Admission Portal" styleClass="wizard-school-name"/>
+            <HBox alignment="CENTER" spacing="0" styleClass="progress-bar-row">
+                <Label text="1 Landing"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="2 Parents"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="3 Student"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="4 Medical"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="5 Payment"  styleClass="prog-step prog-active"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- CENTER: InstaPay card layout -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll-transparent">
+            <StackPane styleClass="root-pane">
+                <VBox alignment="CENTER" spacing="0">
+                    <padding><Insets top="20" right="0" bottom="20" left="0"/></padding>
+
+                    <!-- Premium InstaPay Card -->
+                    <VBox styleClass="instapay-card" alignment="TOP_CENTER" spacing="0" maxWidth="860">
+
+                        <!-- Card Header -->
+                        <VBox styleClass="instapay-header" alignment="CENTER" spacing="6">
+                            <Label text="💳  InstaPay Payment Gateway" styleClass="instapay-title"/>
+                            <Label text="Secure · Fast · Official" styleClass="instapay-subtitle"/>
+                            <Label fx:id="summaryLabel" text="Student Name  •  Grade X" styleClass="instapay-meta"/>
+                        </VBox>
+
+                        <!-- Card Body: QR left, Instructions right -->
+                        <HBox spacing="0">
+
+                            <!-- LEFT: QR Code Zone -->
+                            <VBox styleClass="qr-panel" alignment="CENTER" spacing="14" minWidth="280">
+                                <Label text="Scan to Pay" styleClass="qr-label-top"/>
+
+                                <!-- Fixed StackPane prevents clipping -->
+                                <StackPane fx:id="qrContainer" styleClass="qr-zone"
+                                           prefWidth="200" prefHeight="200">
+                                    <!-- QR visual drawn with nested panes (no external lib) -->
+                                    <VBox alignment="CENTER" spacing="2">
+                                        <HBox alignment="CENTER" spacing="2">
+                                            <Label text="▓▓▓▓▓▓▓" style="-fx-font-family:monospace; -fx-text-fill:#0A1628; -fx-font-size:9px;"/>
+                                        </HBox>
+                                        <Label text="[ QR Code ]" style="-fx-text-fill:#0A1628; -fx-font-size:11px; -fx-font-weight:bold;"/>
+                                        <Label text="EliteSchool@instapay" style="-fx-text-fill:#0A1628; -fx-font-size:10px;"/>
+                                        <HBox alignment="CENTER" spacing="2">
+                                            <Label text="▓▓▓▓▓▓▓" style="-fx-font-family:monospace; -fx-text-fill:#0A1628; -fx-font-size:9px;"/>
+                                        </HBox>
+                                    </VBox>
+                                    <!-- ImageView for actual QR when available -->
+                                    <ImageView fx:id="qrImageView" fitWidth="160" fitHeight="160"
+                                               preserveRatio="true" opacity="0"/>
+                                </StackPane>
+
+                                <Label text="📱 Or manually enter the IPA below" styleClass="qr-hint"/>
+                            </VBox>
+
+                            <!-- RIGHT: Payment Instructions + Reference Input -->
+                            <VBox spacing="18" HBox.hgrow="ALWAYS" styleClass="pay-instructions">
+                                <padding><Insets top="28" right="32" bottom="28" left="32"/></padding>
+
+                                <!-- Amount badge -->
+                                <HBox alignment="CENTER_LEFT" spacing="12">
+                                    <Label text="Amount Due" styleClass="pay-field-label"/>
+                                    <Label fx:id="amountLabel" text="USD 200.00" styleClass="price-tag"/>
+                                </HBox>
+
+                                <!-- IPA display + Copy -->
+                                <VBox spacing="8">
+                                    <Label text="School InstaPay Address (IPA)" styleClass="pay-field-label"/>
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <Label fx:id="ipaAddressLabel" text="EliteSchool@instapay"
+                                               styleClass="ipa-address" HBox.hgrow="ALWAYS"/>
+                                        <Button fx:id="copyIpaButton" text="📋 Copy"
+                                                onAction="#copyIPA" styleClass="btn-copy"/>
+                                    </HBox>
+                                </VBox>
+
+                                <Separator styleClass="thin-separator"/>
+
+                                <!-- Step instructions -->
+                                <VBox spacing="6">
+                                    <Label text="How to Pay:" styleClass="pay-field-label"/>
+                                    <Label text="1. Open your banking app and go to InstaPay"
+                                           styleClass="pay-step-text"/>
+                                    <Label text="2. Enter the IPA address above"
+                                           styleClass="pay-step-text"/>
+                                    <Label text="3. Transfer exactly USD 200.00"
+                                           styleClass="pay-step-text"/>
+                                    <Label text="4. Copy your Transaction Reference Number"
+                                           styleClass="pay-step-text"/>
+                                    <Label text="5. Paste it below and click Verify"
+                                           styleClass="pay-step-text"/>
+                                </VBox>
+
+                                <Separator styleClass="thin-separator"/>
+
+                                <!-- Reference Input -->
+                                <VBox spacing="8">
+                                    <Label text="Transaction Reference Number" styleClass="pay-field-label"/>
+                                    <TextField fx:id="referenceField"
+                                               promptText="e.g.  TXN20251234ABCD"
+                                               styleClass="premium-field ref-field"/>
+                                    <Label text="6–20 alphanumeric characters from your bank receipt"
+                                           styleClass="hint-label"/>
+                                </VBox>
+
+                                <!-- Verify button + spinner -->
+                                <HBox spacing="14" alignment="CENTER_LEFT">
+                                    <Button fx:id="verifyButton" text="🔍  Verify Payment"
+                                            onAction="#handleVerify" styleClass="btn-pay" prefWidth="200"/>
+                                    <ProgressIndicator fx:id="verifySpinner" prefWidth="28" prefHeight="28"/>
+                                </HBox>
+
+                                <!-- Status messages -->
+                                <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+                                <Label fx:id="statusLabel" styleClass="hint-label" wrapText="true"/>
+
+                                <!-- Success panel (hidden until verified) -->
+                                <VBox fx:id="successPanel" styleClass="pay-success-box" spacing="10">
+                                    <Label text="✅  Payment Verified Successfully" styleClass="success-title"
+                                           style="-fx-font-size:16px;"/>
+                                    <Label fx:id="txRefLabel" text="" styleClass="summary-item"/>
+                                    <Button fx:id="finalizeButton" text="🎓  Submit Application"
+                                            onAction="#handleFinalize" styleClass="btn-primary"
+                                            maxWidth="Infinity"/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </StackPane>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="wizard-footer" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="14" right="40" bottom="14" left="40"/></padding>
+            <Button text="← Back to Medical" onAction="#goBack" styleClass="btn-secondary"/>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.hr.HRDashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="800">
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="230" spacing="4">
+            <padding><Insets top="24" right="12" bottom="24" left="12"/></padding>
+
+            <Label text="🏢" style="-fx-font-size:40px; -fx-alignment:CENTER;" maxWidth="Infinity"/>
+            <Label text="HR PANEL" styleClass="sidebar-title"/>
+            <Label text="Human Resources" styleClass="sidebar-subtitle"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <Label text="Applications" styleClass="sidebar-section-label"/>
+            <Button text="📋  All Applications" styleClass="sidebar-btn sidebar-active" maxWidth="Infinity"/>
+            <Button text="🔄  Refresh" onAction="#refreshAll" styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <Separator styleClass="sidebar-sep"/>
+            <Label text="Actions" styleClass="sidebar-section-label"/>
+
+            <Button fx:id="openCvBtn" text="📂  Open CV / File"
+                    onAction="#handleOpenCV" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button fx:id="approveStaffBtn" text="✅  Approve &amp; Email"
+                    onAction="#handleApproveStaff" styleClass="sidebar-btn sidebar-approve" maxWidth="Infinity"/>
+            <Button fx:id="rejectStaffBtn" text="❌  Reject"
+                    onAction="#handleRejectStaff" styleClass="sidebar-btn sidebar-reject" maxWidth="Infinity"/>
+
+            <HBox fx:id="spinnerRow" alignment="CENTER" spacing="8">
+                <ProgressIndicator fx:id="emailSpinner" prefWidth="22" prefHeight="22"/>
+                <Label text="Sending email..." style="-fx-text-fill:rgba(201,168,76,0.7); -fx-font-size:11px;"/>
+            </HBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout" onAction="#logout" styleClass="sidebar-logout" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <center>
+        <VBox spacing="0">
+
+            <!-- Topbar -->
+            <HBox styleClass="dashboard-topbar" alignment="CENTER_LEFT" spacing="20">
+                <padding><Insets top="14" right="28" bottom="14" left="28"/></padding>
+                <Label fx:id="welcomeLabel" text="🏢  HR Dashboard" styleClass="topbar-title"/>
+            </HBox>
+
+            <!-- Stat Cards -->
+            <HBox spacing="16" styleClass="stats-row">
+                <padding><Insets left="24" right="24" top="16" bottom="8"/></padding>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Pending Staff" styleClass="stat-label"/>
+                    <Label fx:id="pendingStaffLabel" text="0" styleClass="stat-value" style="-fx-text-fill:#F5A623;"/>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Approved Staff" styleClass="stat-label"/>
+                    <Label fx:id="approvedStaffLabel" text="0" styleClass="stat-value" style="-fx-text-fill:#4CD97B;"/>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Student Apps" styleClass="stat-label"/>
+                    <Label fx:id="studentAppsLabel" text="0" styleClass="stat-value" style="-fx-text-fill:#60A5FA;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Status bar -->
+            <HBox style="-fx-padding: 4 24 0 24;">
+                <Label fx:id="statusLabel" text="" style="-fx-text-fill:#C9A84C; -fx-font-size:12px;" wrapText="true"/>
+            </HBox>
+
+            <!-- TabPane: Staff + Student tabs -->
+            <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+
+                <!-- Staff Applications Tab -->
+                <Tab text="Staff Applications">
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <padding><Insets left="24" right="24" top="12" bottom="16"/></padding>
+
+                        <!-- Staff Table -->
+                        <VBox HBox.hgrow="ALWAYS" spacing="8">
+                            <Label text="All Staff Applications" styleClass="section-title"/>
+                            <TableView fx:id="staffTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                                <columns>
+                                    <TableColumn fx:id="colStaffName"   text="Name"       prefWidth="160"/>
+                                    <TableColumn fx:id="colStaffEmail"  text="Email"      prefWidth="180"/>
+                                    <TableColumn fx:id="colStaffRole"   text="Role"       prefWidth="110"/>
+                                    <TableColumn fx:id="colStaffStatus" text="Status"     prefWidth="100"/>
+                                    <TableColumn fx:id="colStaffCV"     text="CV Path"    prefWidth="200"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="No staff applications yet." styleClass="hint-label"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+
+                        <!-- Live Notification Feed -->
+                        <VBox minWidth="240" maxWidth="280" spacing="8">
+                            <Label text="Live Alerts" styleClass="section-title"/>
+                            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                                <content>
+                                    <VBox fx:id="notifBox" spacing="6">
+                                        <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                                        <Label text="Waiting for new applications..."
+                                               styleClass="hint-label" wrapText="true"/>
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </VBox>
+                    </HBox>
+                </Tab>
+
+                <!-- Student Admissions Tab -->
+                <Tab text="Student Admissions">
+                    <VBox spacing="8">
+                        <padding><Insets left="24" right="24" top="12" bottom="16"/></padding>
+                        <Label text="Student Admission Applications" styleClass="section-title"/>
+                        <HBox spacing="10">
+                            <Button text="✅  Approve Student" onAction="#handleApproveStudent" styleClass="btn-primary"/>
+                            <Button text="❌  Reject Student"  onAction="#handleRejectStudent"  style="-fx-background-color:#FF6B6B; -fx-text-fill:white; -fx-background-radius:6;"/>
+                        </HBox>
+                        <Label fx:id="selectedStudentInfo" text="Select an application to review." styleClass="field-label" wrapText="true"/>
+                        <TableView fx:id="studentTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                            <columns>
+                                <TableColumn fx:id="colAppId"     text="App #"    prefWidth="70"/>
+                                <TableColumn fx:id="colAppStatus" text="Status"   prefWidth="140"/>
+                                <TableColumn fx:id="colAppDate"   text="Submitted" prefWidth="200"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="No student applications found." styleClass="hint-label"/>
+                            </placeholder>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+            </TabPane>
+        </VBox>
+    </center>
+
+</BorderPane>

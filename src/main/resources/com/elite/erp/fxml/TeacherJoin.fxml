@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elite.erp.presentation.teacher.TeacherJoinController" stylesheets="@../css/Premium.css" prefWidth="800" prefHeight="600" style="-fx-background-color: #0A1628;">
+    <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+    
+    <top>
+        <VBox spacing="10">
+            <Label text="Teacher Recruitment Portal" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Join the Vertex Academy Faculty. Please complete the 4 steps below." wrapText="true" style="-fx-text-fill: #94A3B8;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="stepLabel" text="Step 1 of 4" style="-fx-font-weight: bold; -fx-text-fill: #C9A84C;"/>
+                <ProgressBar fx:id="progressBar" progress="0.25" prefWidth="300" style="-fx-accent: #C9A84C;"/>
+            </HBox>
+            <Separator style="-fx-background-color: #1A3560;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <StackPane fx:id="wizardPane">
+                <padding><Insets top="20" bottom="20"/></padding>
+                
+                <!-- STEP 1: Personal Info -->
+                <VBox fx:id="step1" spacing="15">
+                    <Label text="Personal Information" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <TextField fx:id="fullNameField" promptText="Full Legal Name" styleClass="form-input"/>
+                    <TextField fx:id="emailField" promptText="Email Address (Must be valid format)" styleClass="form-input"/>
+                    <TextField fx:id="phoneField" promptText="Phone Number (Numeric only)" styleClass="form-input"/>
+                </VBox>
+
+                <!-- STEP 2: Expertise -->
+                <VBox fx:id="step2" spacing="15" visible="false">
+                    <Label text="Subject &amp; Experience" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <ComboBox fx:id="subjectCombo" promptText="Select Subject Expertise" styleClass="form-input" prefWidth="300"/>
+                    
+                    <Label fx:id="experienceLabel" text="Years of Experience: 0" style="-fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                    <Slider fx:id="experienceSlider" min="0" max="30" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="5" blockIncrement="1"/>
+                </VBox>
+
+                <!-- STEP 3: CV Upload -->
+                <VBox fx:id="step3" spacing="15" visible="false">
+                    <Label text="Resume / CV Upload" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    
+                    <VBox fx:id="dropZone" alignment="CENTER" prefHeight="200" style="-fx-border-color: #C9A84C; -fx-border-width: 2; -fx-border-style: dashed; -fx-background-color: transparent; -fx-border-radius: 8; -fx-background-radius: 8;">
+                        <Label text="Drag and Drop your PDF CV here" style="-fx-text-fill: #94A3B8; -fx-font-size: 16px;"/>
+                        <Label text="(or click to browse)" style="-fx-text-fill: #64748B;"/>
+                        <Label fx:id="cvPathLabel" text="No file selected" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 10 0 0 0;"/>
+                    </VBox>
+                </VBox>
+
+                <!-- STEP 4: Review -->
+                <VBox fx:id="step4" spacing="15" visible="false">
+                    <Label text="Review &amp; Submit" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label text="Please verify your details before submitting your application." style="-fx-text-fill: #94A3B8;"/>
+                    <TextArea fx:id="reviewArea" editable="false" prefHeight="200" style="-fx-control-inner-background: #1A3560; -fx-text-fill: white; -fx-font-family: monospace;"/>
+                </VBox>
+
+            </StackPane>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <padding><Insets top="20"/></padding>
+            <Button text="Cancel" onAction="#cancel" style="-fx-background-color: transparent; -fx-text-fill: #FF6B6B;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="backBtn" text="Back" onAction="#handleBack" styleClass="btn-secondary" disable="true"/>
+            <Button fx:id="nextBtn" text="Next Step" onAction="#handleNext" styleClass="btn-primary"/>
+        </HBox>
+    </bottom>
+</BorderPane>

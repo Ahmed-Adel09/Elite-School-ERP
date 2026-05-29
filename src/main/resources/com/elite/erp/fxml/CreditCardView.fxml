@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+
+<!--
+  CreditCardView.fxml — Premium Credit Card checkout.
+  Left: live-updating digital card preview. Right: input form.
+  setPreserveRatio="true" on card type logo ImageViews (course requirement).
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.payment.CreditCardController"
+            styleClass="root-pane" prefWidth="1100" prefHeight="720">
+
+    <top>
+        <VBox styleClass="wizard-header">
+            <Label text="Vertex Academy — Admission Portal" styleClass="wizard-school-name"/>
+            <HBox alignment="CENTER" spacing="0" styleClass="progress-bar-row">
+                <Label text="1 Landing"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="2 Parents"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="3 Student"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="4 Medical"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="5 Payment"  styleClass="prog-step prog-active"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-transparent">
+            <HBox spacing="40" alignment="CENTER" styleClass="form-card">
+                <padding><Insets top="28" right="60" bottom="28" left="60"/></padding>
+
+                <!-- ═══ LEFT: Digital Card Preview ═══ -->
+                <VBox alignment="CENTER" spacing="24" minWidth="340">
+                    <Label text="Card Preview" styleClass="pay-field-label"
+                           style="-fx-font-size:13px; -fx-letter-spacing:1;"/>
+
+                    <!-- The card itself -->
+                    <StackPane fx:id="cardPreviewPane" styleClass="digital-card"
+                               prefWidth="340" prefHeight="200">
+
+                        <!-- Decorative circles -->
+                        <Circle fx:id="circle1" radius="110"
+                                style="-fx-fill: rgba(255,255,255,0.05);
+                                       -fx-translate-x:-80; -fx-translate-y:-60;"/>
+                        <Circle fx:id="circle2" radius="80"
+                                style="-fx-fill: rgba(255,255,255,0.04);
+                                       -fx-translate-x:100; -fx-translate-y:70;"/>
+
+                        <!-- Card content overlay -->
+                        <VBox alignment="TOP_LEFT" spacing="0">
+                            <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+
+                            <!-- Top row: chip + logo -->
+                            <HBox alignment="CENTER_LEFT" spacing="0">
+                                <Label text="▬▬" style="-fx-text-fill:#C9A84C; -fx-font-size:22px;
+                                                         -fx-letter-spacing:-2;"/>
+                                <HBox HBox.hgrow="ALWAYS"/>
+                                <!-- Card type logo — preserveRatio=true required -->
+                                <StackPane fx:id="cardLogoPane" prefWidth="60" prefHeight="36">
+                                    <ImageView fx:id="cardLogoView"
+                                               fitWidth="56" fitHeight="32"
+                                               preserveRatio="true"/>
+                                    <Label fx:id="cardTypeLabel" text="VISA"
+                                           style="-fx-text-fill:white; -fx-font-size:22px;
+                                                  -fx-font-weight:bold; -fx-font-style:italic;"/>
+                                </StackPane>
+                            </HBox>
+
+                            <!-- Spacer -->
+                            <VBox prefHeight="18"/>
+
+                            <!-- Card Number -->
+                            <Label fx:id="cardNumberPreview" text="•••• •••• •••• ••••"
+                                   styleClass="card-number-preview"/>
+
+                            <!-- Spacer -->
+                            <VBox prefHeight="14"/>
+
+                            <!-- Bottom row: name + expiry -->
+                            <HBox>
+                                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                                    <Label text="CARD HOLDER" styleClass="card-meta-label"/>
+                                    <Label fx:id="cardHolderPreview" text="FULL NAME"
+                                           styleClass="card-value-label"/>
+                                </VBox>
+                                <VBox spacing="2" alignment="CENTER_RIGHT">
+                                    <Label text="EXPIRES" styleClass="card-meta-label"/>
+                                    <Label fx:id="cardExpiryPreview" text="MM/YY"
+                                           styleClass="card-value-label"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </StackPane>
+
+                    <!-- Amount info -->
+                    <VBox styleClass="summary-card" spacing="8" maxWidth="340">
+                        <HBox>
+                            <Label text="Admission Fee" styleClass="pay-field-label" HBox.hgrow="ALWAYS"/>
+                            <Label text="USD 200.00" styleClass="price-tag" style="-fx-font-size:22px;"/>
+                        </HBox>
+                        <Label text="One-time, non-refundable application processing fee."
+                               styleClass="hint-label" wrapText="true"/>
+                    </VBox>
+                </VBox>
+
+                <!-- ═══ RIGHT: Input Form ═══ -->
+                <VBox spacing="20" HBox.hgrow="ALWAYS" maxWidth="420">
+                    <Label text="💳  Secure Card Payment" styleClass="form-section-title"
+                           style="-fx-font-size:22px;"/>
+                    <Label text="Your card details are encrypted and never stored."
+                           styleClass="form-section-subtitle"/>
+
+                    <!-- Card Number -->
+                    <VBox spacing="6">
+                        <Label text="Card Number" styleClass="pay-field-label"/>
+                        <TextField fx:id="cardNumberField"
+                                   promptText="1234  5678  9012  3456"
+                                   styleClass="premium-field card-field"
+                                   maxWidth="Infinity"/>
+                        <Label fx:id="cardNumberError" text="" styleClass="error-label"/>
+                    </VBox>
+
+                    <!-- Cardholder Name -->
+                    <VBox spacing="6">
+                        <Label text="Cardholder Name" styleClass="pay-field-label"/>
+                        <TextField fx:id="cardHolderField"
+                                   promptText="Name exactly as on card"
+                                   styleClass="premium-field"
+                                   maxWidth="Infinity"/>
+                    </VBox>
+
+                    <!-- Expiry + CVV row -->
+                    <HBox spacing="16">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Expiry Date" styleClass="pay-field-label"/>
+                            <TextField fx:id="expiryField"
+                                       promptText="MM/YY"
+                                       styleClass="premium-field"
+                                       maxWidth="Infinity"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="CVV / CVC" styleClass="pay-field-label"/>
+                            <TextField fx:id="cvvField"
+                                       promptText="•••"
+                                       styleClass="premium-field"
+                                       maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+
+                    <Separator styleClass="thin-separator"/>
+
+                    <!-- Pay button + spinner -->
+                    <HBox spacing="14" alignment="CENTER_LEFT">
+                        <Button fx:id="payButton" text="🔒  Pay USD 200.00 Now"
+                                onAction="#handlePay"
+                                styleClass="btn-pay-card" maxWidth="Infinity"
+                                HBox.hgrow="ALWAYS"/>
+                        <ProgressIndicator fx:id="paySpinner" prefWidth="30" prefHeight="30"/>
+                    </HBox>
+
+                    <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+                    <Label fx:id="statusLabel" styleClass="hint-label" wrapText="true"/>
+
+                    <!-- Success panel -->
+                    <VBox fx:id="successPanel" styleClass="pay-success-box" spacing="10">
+                        <Label text="✅  Payment Authorised" styleClass="success-title"
+                               style="-fx-font-size:16px;"/>
+                        <Label fx:id="refLabel" text="" styleClass="summary-item"/>
+                        <Button fx:id="finalizeButton" text="🎓  Submit Application"
+                                onAction="#handleFinalize" styleClass="btn-primary"
+                                maxWidth="Infinity"/>
+                    </VBox>
+
+                    <!-- Security badges -->
+                    <HBox spacing="12" alignment="CENTER">
+                        <Label text="🔒 SSL Encrypted" styleClass="security-badge"/>
+                        <Label text="✓ PCI Compliant"  styleClass="security-badge"/>
+                        <Label text="🛡 3D Secure"     styleClass="security-badge"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="wizard-footer" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="14" right="40" bottom="14" left="40"/></padding>
+            <Button text="← Payment Methods" onAction="#goBack" styleClass="btn-secondary"/>
+        </HBox>
+    </bottom>
+</BorderPane>

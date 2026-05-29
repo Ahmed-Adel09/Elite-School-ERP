@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.elite.erp.presentation.library.LibraryController"
+      spacing="20" style="-fx-background-color: #0A1628;">
+    
+    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="📚 Elite E-Library" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="statusLabel" text="" style="-fx-text-fill: #4CD97B; -fx-font-weight: bold;"/>
+        <Button text="🔄 Refresh Library" onAction="#loadLibraryBooks" styleClass="btn-secondary"/>
+    </HBox>
+    
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane" style="-fx-background-color: transparent;">
+        <GridPane fx:id="booksGrid" hgap="20" vgap="20" style="-fx-padding: 10;">
+            <!-- Book cards will be dynamically added here -->
+        </GridPane>
+    </ScrollPane>
+
+</VBox>

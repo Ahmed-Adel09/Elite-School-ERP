@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<!--
+  SubmitSuccess.fxml — Final confirmation screen shown after successful submission.
+  Controller: none needed (static screen with one button back to login).
+-->
+<StackPane xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.elite.erp.presentation.common.SubmitSuccessController"
+           styleClass="root-pane" prefWidth="1100" prefHeight="720">
+
+    <VBox alignment="CENTER" spacing="24" maxWidth="560">
+        <Label text="🎓" style="-fx-font-size:72px;"/>
+        <Label text="Application Submitted!" styleClass="hero-title"
+               style="-fx-font-size:32px; -fx-text-fill:#C9A84C;"/>
+        <Label text="Your InstaPay payment has been verified and your application is now under review."
+               styleClass="hero-subtitle" wrapText="true" textAlignment="CENTER"/>
+        <Separator styleClass="gold-separator" maxWidth="300"/>
+        <VBox spacing="10" alignment="CENTER" styleClass="summary-card">
+            <Label text="What happens next?" styleClass="field-label" style="-fx-font-size:14px;"/>
+            <Label text="① The admissions team will review your application within 5 business days."
+                   styleClass="pay-step-text" wrapText="true"/>
+            <Label text="② You will receive an email at the address you provided."
+                   styleClass="pay-step-text" wrapText="true"/>
+            <Label text="③ If approved, a student account setup link will be sent."
+                   styleClass="pay-step-text" wrapText="true"/>
+        </VBox>
+        <Button text="← Return to Login"
+                onAction="#returnToLogin"
+                styleClass="btn-primary" prefWidth="220"/>
+    </VBox>
+</StackPane>

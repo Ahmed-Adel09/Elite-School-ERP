@@ -1,0 +1,57 @@
+# ══════════════════════════════════════════════════════════════
+#  Elite International School ERP — .gitignore
+# ══════════════════════════════════════════════════════════════
+
+# ── Compiled Java ─────────────────────────────────────────────
+*.class
+*.jar
+*.war
+*.ear
+
+# ── Maven build output ────────────────────────────────────────
+/target/
+target/
+
+# ── IntelliJ IDEA ─────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# ── Eclipse ───────────────────────────────────────────────────
+.classpath
+.project
+.settings/
+bin/
+
+# ── VS Code ───────────────────────────────────────────────────
+.vscode/
+
+# ── NetBeans ──────────────────────────────────────────────────
+nbproject/private/
+nbbuild/
+nbdist/
+nbactions.xml
+
+# ── OS generated files ────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── SQLite database (regenerated on launch) ───────────────────
+*.db
+*.db-wal
+*.db-shm
+
+# ── Log files ─────────────────────────────────────────────────
+*.log
+logs/
+
+# ── FXGL system bundle (auto-generated) ──────────────────────
+/system/
+
+# ── Misc ──────────────────────────────────────────────────────
+*.bak
+*.tmp
+*.swp

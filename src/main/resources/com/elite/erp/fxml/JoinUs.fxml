@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.joinus.JoinUsController"
+            stylesheets="@../css/Premium.css"
+            prefWidth="860" prefHeight="640"
+            style="-fx-background-color: #0A1628;">
+
+    <padding><Insets top="30" right="40" bottom="20" left="40"/></padding>
+
+    <!-- ═══ TOP HEADER ═══ -->
+    <top>
+        <VBox spacing="8">
+            <Label text="Join Vertex Academy" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Begin your career journey. Choose your role below." style="-fx-text-fill: #94A3B8;"/>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label fx:id="stepLabel" text="Step 1 of 5" style="-fx-font-weight: bold; -fx-text-fill: #C9A84C;"/>
+                <ProgressBar fx:id="progressBar" progress="0.2" prefWidth="320" style="-fx-accent: #C9A84C;"/>
+                <Label fx:id="roleTagLabel" text="" style="-fx-text-fill: #C9A84C; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            </HBox>
+            <Separator style="-fx-background-color: #1A3560;"/>
+        </VBox>
+    </top>
+
+    <!-- ═══ WIZARD CONTENT ═══ -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <StackPane fx:id="wizardPane">
+                <padding><Insets top="18" bottom="10"/></padding>
+
+                <!-- ─── STEP 0: Role Selection ─── -->
+                <VBox fx:id="step0" spacing="20" alignment="TOP_CENTER">
+                    <Label text="Select Your Application Role" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label text="Your role determines the specific qualifications we will ask for." style="-fx-text-fill: #94A3B8;"/>
+
+                    <HBox spacing="20" alignment="CENTER">
+                        <!-- Teacher Card -->
+                        <VBox fx:id="cardTeacher" alignment="CENTER" spacing="8" prefWidth="160" prefHeight="140"
+                              styleClass="role-card"
+                              onMouseClicked="#selectTeacher">
+                            <Label text="🎓" style="-fx-font-size: 40px;"/>
+                            <Label text="Teacher" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="Subject expertise" style="-fx-font-size: 11px; -fx-text-fill: #94A3B8;" wrapText="true"/>
+                        </VBox>
+                        <!-- Nurse Card -->
+                        <VBox fx:id="cardNurse" alignment="CENTER" spacing="8" prefWidth="160" prefHeight="140"
+                              styleClass="role-card"
+                              onMouseClicked="#selectNurse">
+                            <Label text="🏥" style="-fx-font-size: 40px;"/>
+                            <Label text="Nurse" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="Medical license" style="-fx-font-size: 11px; -fx-text-fill: #94A3B8;" wrapText="true"/>
+                        </VBox>
+                        <!-- Accountant Card -->
+                        <VBox fx:id="cardAccountant" alignment="CENTER" spacing="8" prefWidth="160" prefHeight="140"
+                              styleClass="role-card"
+                              onMouseClicked="#selectAccountant">
+                            <Label text="📊" style="-fx-font-size: 40px;"/>
+                            <Label text="Accountant" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="CPA/CMA cert." style="-fx-font-size: 11px; -fx-text-fill: #94A3B8;" wrapText="true"/>
+                        </VBox>
+                        <!-- Librarian Card -->
+                        <VBox fx:id="cardLibrarian" alignment="CENTER" spacing="8" prefWidth="160" prefHeight="140"
+                              styleClass="role-card"
+                              onMouseClicked="#selectLibrarian">
+                            <Label text="📚" style="-fx-font-size: 40px;"/>
+                            <Label text="Librarian" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="Library science" style="-fx-font-size: 11px; -fx-text-fill: #94A3B8;" wrapText="true"/>
+                        </VBox>
+                    </HBox>
+                    <Label fx:id="roleSelectionError" text="" style="-fx-text-fill: #FF6B6B;" visible="false"/>
+                </VBox>
+
+                <!-- ─── STEP 1: Personal Information ─── -->
+                <VBox fx:id="step1" spacing="15" visible="false">
+                    <Label text="Personal Information" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <TextField fx:id="fullNameField" promptText="Full Legal Name" styleClass="form-input"/>
+                    <TextField fx:id="emailField"    promptText="Gmail Address (for account activation)" styleClass="form-input"/>
+                    <TextField fx:id="phoneField"    promptText="Phone Number (numeric only)" styleClass="form-input"/>
+                </VBox>
+
+                <!-- ─── STEP 2: Role-Specific Fields ─── -->
+                <VBox fx:id="step2" spacing="15" visible="false">
+                    <Label text="Role Qualifications" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+                    <!-- Teacher fields -->
+                    <VBox fx:id="teacherFields" spacing="10" visible="false">
+                        <ComboBox fx:id="subjectCombo" promptText="Select Subject Expertise" styleClass="form-input" prefWidth="400"/>
+                        <Label fx:id="expLabel" text="Years of Experience: 0" style="-fx-text-fill: #C9A84C; -fx-font-weight: bold;"/>
+                        <Slider fx:id="expSlider" min="0" max="30" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="5"/>
+                    </VBox>
+
+                    <!-- Nurse fields -->
+                    <VBox fx:id="nurseFields" spacing="10" visible="false">
+                        <TextField fx:id="licenseField"       promptText="Medical License Number" styleClass="form-input"/>
+                        <TextField fx:id="specializationField" promptText="Clinic Specialization (e.g. Pediatrics)" styleClass="form-input"/>
+                    </VBox>
+
+                    <!-- Accountant fields -->
+                    <VBox fx:id="accountantFields" spacing="10" visible="false">
+                        <TextField fx:id="certField"     promptText="CPA/CMA Certification Number" styleClass="form-input"/>
+                        <TextField fx:id="softwareField" promptText="Previous Financial Software Experience (e.g. SAP, QuickBooks)" styleClass="form-input"/>
+                    </VBox>
+
+                    <!-- Librarian fields -->
+                    <VBox fx:id="librarianFields" spacing="10" visible="false">
+                        <TextField fx:id="libCertField"      promptText="Library Science Certification" styleClass="form-input"/>
+                        <TextField fx:id="archiveField"      promptText="Archive Management Experience (years)" styleClass="form-input"/>
+                        <TextField fx:id="catalogingField"   promptText="Cataloging System Knowledge (e.g. Dewey Decimal, MARC)" styleClass="form-input"/>
+                    </VBox>
+                </VBox>
+
+                <!-- ─── STEP 3: CV Upload (Drag & Drop) ─── -->
+                <VBox fx:id="step3" spacing="15" visible="false">
+                    <Label text="CV / Resume Upload" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label text="Your CV will be securely stored and accessible to HR during review." style="-fx-text-fill: #94A3B8;"/>
+
+                    <VBox fx:id="dropZone" alignment="CENTER" prefHeight="180" spacing="6"
+                          style="-fx-border-color: #C9A84C; -fx-border-width: 2; -fx-border-style: dashed; -fx-background-color: transparent; -fx-border-radius: 10; -fx-background-radius: 10; -fx-cursor: hand;">
+                        <Label text="📁" style="-fx-font-size: 40px;"/>
+                        <Label text="Drag &amp; Drop your PDF CV here" style="-fx-text-fill: #94A3B8; -fx-font-size: 15px;"/>
+                        <Label text="(or click to browse)" style="-fx-text-fill: #64748B; -fx-font-size: 12px;"/>
+                        <Label fx:id="cvPathLabel" text="No file selected" style="-fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 8 0 0 0;"/>
+                    </VBox>
+                </VBox>
+
+                <!-- ─── STEP 4: Review &amp; Submit ─── -->
+                <VBox fx:id="step4" spacing="15" visible="false">
+                    <Label text="Review &amp; Submit" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label text="Please verify your details before submitting." style="-fx-text-fill: #94A3B8;"/>
+                    <TextArea fx:id="reviewArea" editable="false" prefHeight="240"
+                              style="-fx-control-inner-background: #1A3560; -fx-text-fill: white; -fx-font-family: monospace; -fx-font-size: 13px;"/>
+                </VBox>
+
+            </StackPane>
+        </ScrollPane>
+    </center>
+
+    <!-- ═══ BOTTOM NAV ═══ -->
+    <bottom>
+        <HBox spacing="12" alignment="CENTER_RIGHT">
+            <padding><Insets top="16"/></padding>
+            <Button text="Cancel" onAction="#cancel"
+                    style="-fx-background-color: transparent; -fx-text-fill: #FF6B6B; -fx-border-color: #FF6B6B; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 16;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="backBtn" text="◀  Back" onAction="#handleBack" styleClass="btn-secondary" disable="true"/>
+            <Button fx:id="nextBtn" text="Next Step  ▶" onAction="#handleNext" styleClass="btn-primary"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

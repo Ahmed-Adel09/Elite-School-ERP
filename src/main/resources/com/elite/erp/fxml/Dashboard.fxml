@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.dashboard.DashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="780">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="220" spacing="4">
+            <padding><Insets top="24" right="12" bottom="24" left="12"/></padding>
+
+            <Label text="⭐" style="-fx-font-size:36px; -fx-alignment:CENTER;" maxWidth="Infinity"/>
+            <Label text="VERTEX ACADEMY" styleClass="sidebar-title"/>
+            <Label text="Admin Panel" styleClass="sidebar-subtitle"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <Button text="🏠  Dashboard"         styleClass="sidebar-btn sidebar-active" maxWidth="Infinity"/>
+            <Button text="➕  New Admission"      onAction="#newAdmission" styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="🔄  Refresh Students"  onAction="#refreshTable"  styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="🗑  Delete Selected"   onAction="#deleteSelected" styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <Separator styleClass="sidebar-sep"/>
+            <Label text="Reports" styleClass="sidebar-section-label"/>
+            <Button text="📊  Enrollment Chart"  onAction="#openReport"   styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <Separator styleClass="sidebar-sep"/>
+            <Label text="System" styleClass="sidebar-section-label"/>
+            <Button text="⟳  DB Sync"            onAction="#runSync"            styleClass="sidebar-btn" maxWidth="Infinity"/>
+            <Button text="📢  Announcements"     onAction="#openAnnouncements"   styleClass="sidebar-btn" maxWidth="Infinity"/>
+
+            <VBox VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout"             onAction="#logout"       styleClass="sidebar-logout" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- MAIN CONTENT -->
+    <center>
+        <VBox spacing="20">
+            <!-- TOP BAR -->
+            <HBox styleClass="dashboard-topbar" alignment="CENTER_LEFT" spacing="20">
+                <padding><Insets top="14" right="28" bottom="14" left="28"/></padding>
+                <Label text="Dashboard Overview" styleClass="topbar-title"/>
+                <VBox HBox.hgrow="ALWAYS"/>
+                <!-- Notification badge -->
+                <StackPane>
+                    <Label text="🔔" style="-fx-font-size:22px;"/>
+                    <Label fx:id="notificationBadge" text="0" styleClass="notif-badge"
+                           visible="false" StackPane.alignment="TOP_RIGHT"/>
+                </StackPane>
+            </HBox>
+
+            <!-- STAT CARDS ROW -->
+            <HBox spacing="18" styleClass="stats-row">
+                <padding><Insets left="24" right="24"/></padding>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Total Students" styleClass="stat-label"/>
+                    <Label fx:id="totalStudentsLabel" text="0" styleClass="stat-value"/>
+                </VBox>
+                <VBox styleClass="stat-card stat-gold" HBox.hgrow="ALWAYS">
+                    <Label text="Notification Server" styleClass="stat-label"/>
+                    <Label text="● Live on :9999" styleClass="stat-value-sm stat-green"/>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="DB Engine" styleClass="stat-label"/>
+                    <Label text="SQLite (Local)" styleClass="stat-value-sm"/>
+                </VBox>
+            </HBox>
+
+            <!-- SYNC PROGRESS -->
+            <VBox spacing="6" styleClass="sync-row">
+                <padding><Insets left="24" right="24"/></padding>
+                <Label fx:id="syncStatus" text="Click 'DB Sync' to run background sync..."
+                       styleClass="hint-label"/>
+                <ProgressBar fx:id="syncProgress" maxWidth="Infinity" progress="0"
+                             visible="true" styleClass="sync-bar"/>
+            </VBox>
+
+            <!-- MAIN ROW: Table + Notifications -->
+            <HBox spacing="16" VBox.vgrow="ALWAYS">
+                <padding><Insets left="24" right="24" bottom="16"/></padding>
+
+                <!-- Students Table -->
+                <VBox HBox.hgrow="ALWAYS" spacing="8">
+                    <Label text="Enrolled Students" styleClass="section-title"/>
+                    <TableView fx:id="studentsTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                        <columns>
+                            <TableColumn fx:id="colId"          text="ID"          prefWidth="50"/>
+                            <TableColumn fx:id="colFirstName"   text="First Name"  prefWidth="130"/>
+                            <TableColumn fx:id="colLastName"    text="Last Name"   prefWidth="130"/>
+                            <TableColumn fx:id="colGrade"       text="Grade"       prefWidth="110"/>
+                            <TableColumn fx:id="colNationality" text="Nationality" prefWidth="120"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No students enrolled yet. Submit an admission to begin."
+                                   styleClass="hint-label"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+
+                <!-- Notifications Panel -->
+                <VBox minWidth="260" maxWidth="300" spacing="8">
+                    <Label text="🔔 Live Notifications" styleClass="section-title"/>
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="notif-scroll">
+                        <VBox fx:id="notificationBox" spacing="6">
+                            <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                            <Label text="Waiting for socket notifications..."
+                                   styleClass="hint-label" wrapText="true"/>
+                        </VBox>
+                    </ScrollPane>
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

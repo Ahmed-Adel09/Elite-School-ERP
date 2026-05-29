@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.teacher.TeacherLMSController"
+            styleClass="root-pane" prefWidth="1000" prefHeight="700" stylesheets="@../css/Premium.css">
+
+    <top>
+        <HBox styleClass="dashboard-topbar" alignment="CENTER_LEFT" spacing="20">
+            <padding><Insets top="14" right="28" bottom="14" left="28"/></padding>
+            <Label text="🎓 Teacher LMS Portal" styleClass="topbar-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="🚪 Logout" onAction="#logout" styleClass="btn-secondary"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            
+            <!-- MATERIAL UPLOAD TAB -->
+            <Tab text="📤 Material Upload">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Upload Study Material (PDF)" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label fx:id="uploadStatus" text="" style="-fx-text-fill: #4CD97B; -fx-font-weight: bold;"/>
+                    
+                    <VBox spacing="10" maxWidth="400" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                        <Label text="Select Class:" style="-fx-text-fill: #94A3B8;"/>
+                        <ComboBox fx:id="uploadClassCombo" promptText="Choose Class" prefWidth="300" styleClass="premium-combo"/>
+                        
+                        <Label text="Assignment Title:" style="-fx-text-fill: #94A3B8;"/>
+                        <TextField fx:id="uploadTitleField" promptText="e.g. Chapter 1 Notes" styleClass="premium-field"/>
+                        
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button text="Browse PDF..." onAction="#browsePDF" styleClass="btn-secondary"/>
+                            <Label fx:id="selectedFileLabel" text="No file selected" style="-fx-text-fill: #94A3B8;"/>
+                        </HBox>
+                        
+                        <Button text="Upload Material" onAction="#uploadMaterial" styleClass="premium-field" prefWidth="300" style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    </VBox>
+                </VBox>
+            </Tab>
+
+            <!-- QUIZ CREATOR TAB -->
+            <Tab text="📝 Quiz Creator">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Create Multiple Choice Exam" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label fx:id="quizStatus" text="" style="-fx-text-fill: #4CD97B; -fx-font-weight: bold;"/>
+                    
+                    <HBox spacing="20">
+                        <VBox spacing="10" minWidth="300" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <Label text="Exam Details" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="Class:" style="-fx-text-fill: #94A3B8;"/>
+                            <ComboBox fx:id="quizClassCombo" promptText="Choose Class" prefWidth="250" styleClass="premium-combo"/>
+                            
+                            <Label text="Exam Title:" style="-fx-text-fill: #94A3B8;"/>
+                            <TextField fx:id="quizTitleField" promptText="Midterm Exam" styleClass="premium-field"/>
+                            
+                            <Label text="Duration (Minutes):" style="-fx-text-fill: #94A3B8;"/>
+                            <TextField fx:id="quizDurationField" promptText="30" styleClass="premium-field"/>
+                            
+                            <Label text="Availability (Hours from now):" style="-fx-text-fill: #94A3B8;"/>
+                            <TextField fx:id="quizAvailabilityField" promptText="1" styleClass="premium-field"/>
+                            
+                            <Button text="Create Exam &amp; Publish" onAction="#publishExam" styleClass="premium-field" prefWidth="250" style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        </VBox>
+                        
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Questions Builder" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="+ Add Question" onAction="#addQuestionFields" styleClass="btn-secondary"/>
+                            </HBox>
+                            <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                                <VBox fx:id="questionsContainer" spacing="15">
+                                    <!-- Dynamic question forms go here -->
+                                </VBox>
+                            </ScrollPane>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- CLASS GROUP CHAT TAB -->
+            <Tab text="💬 Class Group Chat">
+                <VBox spacing="16">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+
+                    <!-- Header -->
+                    <HBox alignment="CENTER_LEFT" spacing="16">
+                        <VBox spacing="4">
+                            <Label text="Class Group Chat" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="Your messages appear with a 🏫 [TEACHER] tag visible to all students." style="-fx-text-fill: #94A3B8; -fx-font-size: 12px;"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Class selector + Join button -->
+                    <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #1A3560; -fx-padding: 16; -fx-background-radius: 10;">
+                        <Label text="Select Class Room:" style="-fx-text-fill: #94A3B8; -fx-font-size: 14px;"/>
+                        <ComboBox fx:id="chatClassCombo" promptText="Choose class to join..." prefWidth="200" styleClass="premium-combo"/>
+                        <Button text="🔗 Join Chat Room" onAction="#joinChatRoom"
+                                style="-fx-background-color: #4CD97B; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 8 20; -fx-background-radius: 6;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="chatStatusLabel" text="🔴 Not connected" style="-fx-text-fill: #FF6B6B; -fx-font-weight: bold;"/>
+                    </HBox>
+
+                    <!-- Chat area -->
+                    <VBox VBox.vgrow="ALWAYS" spacing="10" style="-fx-background-color: #1A3560; -fx-padding: 16; -fx-background-radius: 10;">
+                        <Label text="Messages" style="-fx-text-fill: #94A3B8; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                        <TextArea fx:id="chatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS"
+                                  style="-fx-background-color: #0A1628; -fx-text-fill: #E2E8F0; -fx-font-family: 'Consolas'; -fx-font-size: 13px; -fx-border-color: transparent; -fx-background-radius: 8; -fx-padding: 10;"
+                                  prefHeight="350"/>
+                    </VBox>
+
+                    <!-- Message input -->
+                    <HBox spacing="10" style="-fx-background-color: #1A3560; -fx-padding: 12; -fx-background-radius: 10;">
+                        <TextField fx:id="chatInputField" promptText="Type your message to the class..."
+                                   HBox.hgrow="ALWAYS" styleClass="premium-field"
+                                   onAction="#sendChatMessage"/>
+                        <Button text="📨 Send" onAction="#sendChatMessage"
+                                style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 8 20; -fx-background-radius: 6;" prefWidth="100"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>

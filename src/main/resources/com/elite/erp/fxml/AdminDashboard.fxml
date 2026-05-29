@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<!--
+  AdminDashboard.fxml — System Admin: Overview + Class Assignment + Timetable
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.admin.AdminDashboardController"
+            styleClass="root-pane" prefWidth="1200" prefHeight="800">
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <left>
+        <VBox styleClass="sidebar" prefWidth="230" spacing="4">
+            <padding><Insets top="24" right="12" bottom="24" left="12"/></padding>
+
+            <Label text="⭐" style="-fx-font-size:40px; -fx-alignment:CENTER;" maxWidth="Infinity"/>
+            <Label text="ADMIN PANEL" styleClass="sidebar-title"/>
+            <Label text="System Administration" styleClass="sidebar-subtitle"/>
+            <Separator styleClass="sidebar-sep"/>
+
+            <Label text="Content" styleClass="sidebar-section-label"/>
+            <Button text="📢  Announcements"  onAction="#openAnnouncements" styleClass="sidebar-btn sidebar-active" maxWidth="Infinity"/>
+            <Button text="📋  Overview"        onAction="#refreshTable"      styleClass="sidebar-btn"               maxWidth="Infinity"/>
+            <Button text="🔄  Refresh"         onAction="#refreshTable"      styleClass="sidebar-btn"               maxWidth="Infinity"/>
+
+            <Separator styleClass="sidebar-sep"/>
+            <Label text="Note" styleClass="sidebar-section-label"/>
+            <Label text="Application approvals are managed by HR (HR111@gmail.com)."
+                   style="-fx-text-fill: rgba(255,255,255,0.4); -fx-font-size:10px;"
+                   wrapText="true"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="🚪  Logout" onAction="#logout" styleClass="sidebar-logout" maxWidth="Infinity"/>
+        </VBox>
+    </left>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <!-- ── OVERVIEW TAB ── -->
+            <Tab text="System Overview">
+                <VBox spacing="0">
+                    <HBox styleClass="dashboard-topbar" alignment="CENTER_LEFT" spacing="20">
+                        <padding><Insets top="14" right="28" bottom="14" left="28"/></padding>
+                        <Label text="🛡  System Admin Dashboard" styleClass="topbar-title"/>
+                    </HBox>
+
+                    <HBox spacing="16" styleClass="stats-row">
+                        <padding><Insets left="24" right="24" top="12" bottom="8"/></padding>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label text="Pending Admissions" styleClass="stat-label"/>
+                            <Label fx:id="totalPendingLabel" text="0" styleClass="stat-value" style="-fx-text-fill:#F5A623;"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label text="Approved" styleClass="stat-label"/>
+                            <Label fx:id="totalApprovedLabel" text="0" styleClass="stat-value" style="-fx-text-fill:#4CD97B;"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label text="Rejected" styleClass="stat-label"/>
+                            <Label fx:id="totalRejectedLabel" text="0" styleClass="stat-value" style="-fx-text-fill:#FF6B6B;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox style="-fx-padding: 4 24 0 24;">
+                        <Label fx:id="actionStatusLabel" text="" styleClass="field-label" wrapText="true"/>
+                    </HBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <padding><Insets left="24" right="24" top="12" bottom="16"/></padding>
+
+                        <VBox HBox.hgrow="ALWAYS" spacing="8">
+                            <Label text="Admission Overview (read-only — managed by HR)" styleClass="section-title"/>
+                            <TableView fx:id="applicationsTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                                <columns>
+                                    <TableColumn fx:id="colAppId"  text="App #"     prefWidth="80"/>
+                                    <TableColumn fx:id="colStatus" text="Status"    prefWidth="160"/>
+                                    <TableColumn fx:id="colDate"   text="Submitted" prefWidth="220"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="No applications found." styleClass="hint-label"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+
+                        <VBox minWidth="260" maxWidth="300" spacing="8">
+                            <Label text="Live Activity Feed" styleClass="section-title"/>
+                            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                                <content>
+                                    <VBox fx:id="notifBox" spacing="6">
+                                        <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                                        <Label text="Listening for real-time activity..."
+                                               styleClass="hint-label" wrapText="true"/>
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- ── CLASS ASSIGNMENT TAB ── -->
+            <Tab text="Class Assignment">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Class Management &amp; Assignments" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label fx:id="assignmentStatus" text="" style="-fx-text-fill: #4CD97B; -fx-font-weight: bold;"/>
+
+                    <HBox spacing="40">
+                        <!-- Teacher to Multiple Classes -->
+                        <VBox spacing="10" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <Label text="Assign Teacher to Classes" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <ComboBox fx:id="teacherCombo" promptText="Select Teacher" prefWidth="250" styleClass="premium-combo"/>
+                            <Label text="Select Classes:" style="-fx-text-fill: #94A3B8;"/>
+                            <ScrollPane prefHeight="200" style="-fx-background-color: transparent;" styleClass="scroll-pane">
+                                <VBox fx:id="teacherClassChecksBox" spacing="8"/>
+                            </ScrollPane>
+                            <Button text="Save Teacher Assignment" onAction="#saveTeacherAssignment"
+                                    styleClass="premium-field" prefWidth="250"
+                                    style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        </VBox>
+
+                        <!-- Student to Single Class -->
+                        <VBox spacing="10" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <Label text="Assign Student to Class" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <ComboBox fx:id="studentCombo" promptText="Select Student" prefWidth="250" styleClass="premium-combo"/>
+                            <Label text="Select Class:" style="-fx-text-fill: #94A3B8;"/>
+                            <ComboBox fx:id="studentClassCombo" promptText="Select Class" prefWidth="250" styleClass="premium-combo"/>
+                            <Button text="Save Student Assignment" onAction="#saveStudentAssignment"
+                                    styleClass="premium-field" prefWidth="250"
+                                    style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- ── CLASS TIMETABLE TAB ── -->
+            <Tab text="📅 Class Timetable">
+                <VBox spacing="16">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <VBox spacing="4">
+                            <Label text="Class Timetable Manager" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                            <Label text="Friday &amp; Saturday are permanent holidays and cannot be assigned." style="-fx-text-fill: #F5A623; -fx-font-size: 12px;"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="scheduleStatus" text="" style="-fx-text-fill: #4CD97B; -fx-font-weight: bold;"/>
+                    </HBox>
+
+                    <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+                        <!-- LEFT: Add Schedule Entry Form -->
+                        <VBox spacing="14" minWidth="340" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <Label text="Add New Subject Slot" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+                            <Label text="Class:" style="-fx-text-fill: #94A3B8;"/>
+                            <ComboBox fx:id="scheduleClassCombo" promptText="Select Class" prefWidth="280"
+                                      styleClass="premium-combo" onAction="#onScheduleClassSelected"/>
+
+                            <Label text="Subject Name:" style="-fx-text-fill: #94A3B8;"/>
+                            <TextField fx:id="subjectField" promptText="e.g. Mathematics" styleClass="premium-field"/>
+
+                            <Label text="Subject Type:" style="-fx-text-fill: #94A3B8;"/>
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <RadioButton fx:id="rbCore" text="Core Subject (max 3 days, max 2h)"
+                                             selected="true" style="-fx-text-fill: white;"
+                                             onAction="#onSubjectTypeChanged">
+                                    <toggleGroup><ToggleGroup fx:id="subjectTypeGroup"/></toggleGroup>
+                                </RadioButton>
+                            </HBox>
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <RadioButton fx:id="rbMinor" text="Minor Subject (max 2 days, max 1h)"
+                                             style="-fx-text-fill: white;" onAction="#onSubjectTypeChanged"
+                                             toggleGroup="$subjectTypeGroup"/>
+                            </HBox>
+
+                            <Label text="Days (Fri &amp; Sat = permanent holidays):" style="-fx-text-fill: #94A3B8;"/>
+                            <VBox spacing="6" style="-fx-background-color: #0A1628; -fx-padding: 12; -fx-background-radius: 8;">
+                                <CheckBox fx:id="cbMon" text="Monday"    style="-fx-text-fill: white;"/>
+                                <CheckBox fx:id="cbTue" text="Tuesday"   style="-fx-text-fill: white;"/>
+                                <CheckBox fx:id="cbWed" text="Wednesday" style="-fx-text-fill: white;"/>
+                                <CheckBox fx:id="cbThu" text="Thursday"  style="-fx-text-fill: white;"/>
+                                <CheckBox fx:id="cbFri" text="Friday  (Holiday — disabled)" disable="true"
+                                          style="-fx-text-fill: #FF6B6B; -fx-opacity: 0.6;"/>
+                                <CheckBox fx:id="cbSat" text="Saturday (Holiday — disabled)" disable="true"
+                                          style="-fx-text-fill: #FF6B6B; -fx-opacity: 0.6;"/>
+                            </VBox>
+
+                            <Label text="Duration (minutes):" style="-fx-text-fill: #94A3B8;"/>
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <TextField fx:id="durationField" promptText="60" prefWidth="80" styleClass="premium-field"/>
+                                <Label fx:id="durationHintLabel"
+                                       text="Core: max 120 min  |  Minor: max 60 min"
+                                       style="-fx-text-fill: #94A3B8; -fx-font-size: 11px;"/>
+                            </HBox>
+
+                            <Label text="Start Time:" style="-fx-text-fill: #94A3B8;"/>
+                            <VBox spacing="4">
+                                <ComboBox fx:id="startTimeCombo" prefWidth="200" styleClass="premium-combo"
+                                          promptText="Pick start time"/>
+                                <Label text="🕗 Morning: 8:30–12:00  |  🍽 Lunch: 12:30 (fixed)  |  🕑 Afternoon: 13:30–14:30  |  🔔 3:00 Dismissal"
+                                       style="-fx-text-fill: #F5A623; -fx-font-size: 10px;" wrapText="true" maxWidth="280"/>
+                            </VBox>
+
+                            <Button text="✅ Add to Timetable" onAction="#saveScheduleEntry"
+                                    style="-fx-background-color: #C9A84C; -fx-text-fill: #0A1628; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-background-radius: 6;"
+                                    prefWidth="280"/>
+                        </VBox>
+
+                        <!-- RIGHT: Current Schedule Table -->
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <HBox alignment="CENTER_LEFT" spacing="12">
+                                <Label text="Current Timetable" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="🔄 Refresh" onAction="#loadAllSchedules" styleClass="btn-secondary"/>
+                                <Button text="🗑 Delete Selected" onAction="#deleteScheduleEntry"
+                                        style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 6 14; -fx-background-radius: 6;"/>
+                            </HBox>
+
+                            <TableView fx:id="scheduleTable" VBox.vgrow="ALWAYS" styleClass="premium-table">
+                                <columns>
+                                    <TableColumn fx:id="colSchedClass"   text="Class"   prefWidth="70"/>
+                                    <TableColumn fx:id="colSchedSubject" text="Subject" prefWidth="120"/>
+                                    <TableColumn fx:id="colSchedType"    text="Type"    prefWidth="60"/>
+                                    <TableColumn fx:id="colSchedTime"    text="Time"    prefWidth="65"/>
+                                    <TableColumn fx:id="colSchedDays"    text="Days"    prefWidth="155"/>
+                                    <TableColumn fx:id="colSchedDur"     text="Min"     prefWidth="45"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="No schedule entries yet. Add one on the left." style="-fx-text-fill: #94A3B8;"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

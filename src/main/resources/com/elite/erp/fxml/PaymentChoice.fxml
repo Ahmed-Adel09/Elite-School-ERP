@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<!--
+  PaymentChoice.fxml — Let the parent choose between InstaPay or Credit/Debit Card.
+  Appears after Step 4 (Medical). Replaces old direct navigation to InstaPayStep.
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.elite.erp.presentation.payment.PaymentChoiceController"
+            styleClass="root-pane" prefWidth="1100" prefHeight="720">
+
+    <top>
+        <VBox styleClass="wizard-header">
+            <Label text="Vertex Academy — Admission Portal" styleClass="wizard-school-name"/>
+            <HBox alignment="CENTER" spacing="0" styleClass="progress-bar-row">
+                <Label text="1 Landing"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="2 Parents"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="3 Student"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="4 Medical"  styleClass="prog-step prog-done"/>
+                <Label text="——" styleClass="prog-arrow"/>
+                <Label text="5 Payment"  styleClass="prog-step prog-active"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane styleClass="root-pane">
+            <VBox alignment="CENTER" spacing="32">
+                <padding><Insets top="40" right="80" bottom="40" left="80"/></padding>
+
+                <!-- Header -->
+                <VBox alignment="CENTER" spacing="8">
+                    <Label text="Choose Payment Method" styleClass="form-section-title"
+                           style="-fx-font-size:28px;"/>
+                    <Label text="Select how you would like to pay the $200.00 admission fee."
+                           styleClass="form-section-subtitle"/>
+                    <Label fx:id="summaryLabel" text="" styleClass="instapay-meta"/>
+                </VBox>
+
+                <!-- Two method cards side by side -->
+                <HBox spacing="28" alignment="CENTER">
+
+                    <!-- Option 1: InstaPay -->
+                    <VBox styleClass="method-card" alignment="CENTER" spacing="16"
+                          prefWidth="320" prefHeight="260" onMouseClicked="#chooseInstaPay">
+                        <Label text="📱" style="-fx-font-size:52px;"/>
+                        <Label text="InstaPay" styleClass="method-card-title"/>
+                        <Label text="Transfer via Egypt's real-time&#10;payment network"
+                               styleClass="method-card-desc" textAlignment="CENTER" wrapText="true"/>
+                        <Label text="No card needed · Instant" styleClass="method-card-badge"
+                               style="-fx-text-fill:#4CD97B;"/>
+                        <Button text="Pay with InstaPay →"
+                                onAction="#chooseInstaPay" styleClass="btn-method-instapay"
+                                maxWidth="220"/>
+                    </VBox>
+
+                    <!-- Divider -->
+                    <VBox alignment="CENTER" spacing="6">
+                        <Separator orientation="VERTICAL" prefHeight="180"
+                                   style="-fx-background-color: rgba(255,255,255,0.1);"/>
+                        <Label text="OR" style="-fx-text-fill:rgba(255,255,255,0.3);
+                                                -fx-font-size:13px; -fx-font-weight:bold;"/>
+                        <Separator orientation="VERTICAL" prefHeight="180"
+                                   style="-fx-background-color: rgba(255,255,255,0.1);"/>
+                    </VBox>
+
+                    <!-- Option 2: Credit / Debit Card -->
+                    <VBox styleClass="method-card" alignment="CENTER" spacing="16"
+                          prefWidth="320" prefHeight="260" onMouseClicked="#chooseCreditCard">
+                        <Label text="💳" style="-fx-font-size:52px;"/>
+                        <Label text="Credit / Debit Card" styleClass="method-card-title"/>
+                        <Label text="Pay securely with Visa,&#10;Mastercard or any debit card"
+                               styleClass="method-card-desc" textAlignment="CENTER" wrapText="true"/>
+                        <Label text="Visa · Mastercard · Secure" styleClass="method-card-badge"
+                               style="-fx-text-fill:#C9A84C;"/>
+                        <Button text="Pay with Card →"
+                                onAction="#chooseCreditCard" styleClass="btn-method-card"
+                                maxWidth="220"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Security note -->
+                <Label text="🔒  All payments are encrypted and processed securely. No card data is stored on our servers."
+                       styleClass="hint-label" wrapText="true" textAlignment="CENTER" maxWidth="600"/>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="wizard-footer" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="14" right="40" bottom="14" left="40"/></padding>
+            <Button text="← Back to Medical" onAction="#goBack" styleClass="btn-secondary"/>
+        </HBox>
+    </bottom>
+</BorderPane>
