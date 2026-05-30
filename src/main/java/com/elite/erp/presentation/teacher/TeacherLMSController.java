@@ -47,6 +47,11 @@ public class TeacherLMSController implements Initializable {
     @FXML private TextField chatInputField;
     @FXML private Label chatStatusLabel;
 
+    // Manage Content
+    @FXML private Label manageStatusLabel;
+    @FXML private ListView<ComboItem> manageMaterialsList;
+    @FXML private ListView<ComboItem> manageExamsList;
+
     private Socket chatSocket;
     private PrintWriter chatWriter;
     private int currentChatClassId = -1;
@@ -68,6 +73,7 @@ public class TeacherLMSController implements Initializable {
         currentUser = MainApp.getCurrentUser();
         loadAssignedClasses();
         addQuestionFields(); // Add first question by default
+        loadManageLists();
     }
 
     private void loadAssignedClasses() {
@@ -265,6 +271,93 @@ public class TeacherLMSController implements Initializable {
             e.printStackTrace();
             quizStatus.setText("❌ Failed to save exam.");
             quizStatus.setStyle("-fx-text-fill: #FF6B6B;");
+        }
+    }
+
+    // ── Manage Content Logic ────────────────────────────────────────────────
+
+    @FXML
+    private void loadManageLists() {
+        if (currentUser == null) return;
+        if (manageMaterialsList != null) manageMaterialsList.getItems().clear();
+        if (manageExamsList != null) manageExamsList.getItems().clear();
+        
+        try (Connection conn = DatabaseManager.getConnection()) {
+            // Load Materials
+            PreparedStatement psMat = conn.prepareStatement("SELECT a.id, a.title, c.name as class_name FROM assignments a JOIN classes c ON a.class_id = c.id WHERE a.teacher_id = ?");
+            psMat.setInt(1, currentUser.getId());
+            ResultSet rsMat = psMat.executeQuery();
+            while (rsMat.next()) {
+                manageMaterialsList.getItems().add(new ComboItem(rsMat.getInt("id"), rsMat.getString("title") + " (" + rsMat.getString("class_name") + ")"));
+            }
+            
+            // Load Exams
+            PreparedStatement psExam = conn.prepareStatement("SELECT e.id, e.title, c.name as class_name FROM exams e JOIN classes c ON e.class_id = c.id WHERE e.teacher_id = ?");
+            psExam.setInt(1, currentUser.getId());
+            ResultSet rsExam = psExam.executeQuery();
+            while (rsExam.next()) {
+                manageExamsList.getItems().add(new ComboItem(rsExam.getInt("id"), rsExam.getString("title") + " (" + rsExam.getString("class_name") + ")"));
+            }
+            if (manageStatusLabel != null) {
+                manageStatusLabel.setText("✅ Lists refreshed.");
+                manageStatusLabel.setStyle("-fx-text-fill: #4CD97B;");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (manageStatusLabel != null) {
+                manageStatusLabel.setText("❌ Failed to load lists.");
+                manageStatusLabel.setStyle("-fx-text-fill: #FF6B6B;");
+            }
+        }
+    }
+
+    @FXML
+    private void deleteSelectedMaterial() {
+        ComboItem selected = manageMaterialsList.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            manageStatusLabel.setText("❌ Select a material to delete.");
+            manageStatusLabel.setStyle("-fx-text-fill: #FF6B6B;");
+            return;
+        }
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM assignments WHERE id = ?")) {
+            ps.setInt(1, selected.id);
+            ps.executeUpdate();
+            manageStatusLabel.setText("✅ Material deleted.");
+            manageStatusLabel.setStyle("-fx-text-fill: #4CD97B;");
+            loadManageLists();
+        } catch (Exception e) {
+            e.printStackTrace();
+            manageStatusLabel.setText("❌ Failed to delete material.");
+            manageStatusLabel.setStyle("-fx-text-fill: #FF6B6B;");
+        }
+    }
+
+    @FXML
+    private void deleteSelectedExam() {
+        ComboItem selected = manageExamsList.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            manageStatusLabel.setText("❌ Select an exam to delete.");
+            manageStatusLabel.setStyle("-fx-text-fill: #FF6B6B;");
+            return;
+        }
+        try (Connection conn = DatabaseManager.getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement psQ = conn.prepareStatement("DELETE FROM exam_questions WHERE exam_id = ?");
+                 PreparedStatement psE = conn.prepareStatement("DELETE FROM exams WHERE id = ?")) {
+                psQ.setInt(1, selected.id);
+                psQ.executeUpdate();
+                psE.setInt(1, selected.id);
+                psE.executeUpdate();
+                conn.commit();
+                manageStatusLabel.setText("✅ Exam deleted.");
+                manageStatusLabel.setStyle("-fx-text-fill: #4CD97B;");
+                loadManageLists();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            manageStatusLabel.setText("❌ Failed to delete exam.");
+            manageStatusLabel.setStyle("-fx-text-fill: #FF6B6B;");
         }
     }
 

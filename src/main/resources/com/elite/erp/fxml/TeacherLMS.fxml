@@ -127,6 +127,37 @@
                 </VBox>
             </Tab>
 
+            <!-- MANAGE CONTENT TAB -->
+            <Tab text="🗑 Manage Content">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+                    <Label text="Manage Your Uploads" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    <Label fx:id="manageStatusLabel" text="" style="-fx-text-fill: #4CD97B; -fx-font-weight: bold;"/>
+                    
+                    <HBox spacing="20" VBox.vgrow="ALWAYS">
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Uploaded Materials" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="🔄 Refresh" onAction="#loadManageLists" styleClass="btn-secondary"/>
+                            </HBox>
+                            <ListView fx:id="manageMaterialsList" VBox.vgrow="ALWAYS" style="-fx-background-color: #0A1628; -fx-control-inner-background: #0A1628; -fx-text-fill: white;"/>
+                            <Button text="🗑 Delete Selected Material" onAction="#deleteSelectedMaterial" styleClass="btn-secondary" style="-fx-background-color: #FF6B6B; -fx-text-fill: white;"/>
+                        </VBox>
+                        
+                        <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-background-color: #1A3560; -fx-padding: 20; -fx-background-radius: 10;">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Published Exams" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button text="🔄 Refresh" onAction="#loadManageLists" styleClass="btn-secondary"/>
+                            </HBox>
+                            <ListView fx:id="manageExamsList" VBox.vgrow="ALWAYS" style="-fx-background-color: #0A1628; -fx-control-inner-background: #0A1628; -fx-text-fill: white;"/>
+                            <Button text="🗑 Delete Selected Exam" onAction="#deleteSelectedExam" styleClass="btn-secondary" style="-fx-background-color: #FF6B6B; -fx-text-fill: white;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </Tab>
+
         </TabPane>
     </center>
 </BorderPane>

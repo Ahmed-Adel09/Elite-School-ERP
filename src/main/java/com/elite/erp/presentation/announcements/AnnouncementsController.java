@@ -153,6 +153,13 @@ public class AnnouncementsController implements Initializable {
         date.getStyleClass().add("ann-card-date");
         header.getChildren().addAll(title, date);
 
+        if (currentUser != null && (currentUser.isAdmin() || "HR".equals(currentUser.getRole()))) {
+            Button deleteBtn = new Button("🗑 Delete");
+            deleteBtn.setStyle("-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 11px; -fx-padding: 4 8;");
+            deleteBtn.setOnAction(e -> deleteAnnouncement(ann.getId()));
+            header.getChildren().add(deleteBtn);
+        }
+
         // Body text
         Label body = new Label(ann.getContent() != null ? ann.getContent() : "");
         body.getStyleClass().add("ann-card-body");
@@ -249,6 +256,22 @@ public class AnnouncementsController implements Initializable {
             ps.setString(5, audience);
             ps.executeUpdate();
         }
+    }
+
+    private void deleteAnnouncement(int id) {
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try (Connection conn = DatabaseManager.getConnection();
+                     PreparedStatement ps = conn.prepareStatement("DELETE FROM announcements WHERE id = ?")) {
+                    ps.setInt(1, id);
+                    ps.executeUpdate();
+                }
+                return null;
+            }
+        };
+        task.setOnSucceeded(e -> loadAnnouncements());
+        new Thread(task, "DeleteAnnouncement-Thread").start();
     }
 
     // ── Media Upload ──────────────────────────────────────────────────────────
