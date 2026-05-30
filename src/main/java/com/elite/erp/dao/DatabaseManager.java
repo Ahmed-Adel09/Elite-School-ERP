@@ -459,13 +459,8 @@ public class DatabaseManager {
             (2, 'Upcoming Parent-Teacher Conferences', 'Conferences will be held next week.', '2025-02-05', 'PARENT');
             """;
 
-        String seedGrades = """
-            INSERT OR IGNORE INTO grades (id, student_id, subject, score, date) VALUES
-            (1, 1, 'Math', 95.0, '2025-05-10'),
-            (2, 1, 'Science', 88.5, '2025-05-11'),
-            (3, 1, 'History', 92.0, '2025-05-12'),
-            (4, 1, 'English', 85.0, '2025-05-13');
-            """;
+        // Grades are NOT seeded — they are inserted live when students submit exams.
+        // See LockdownExamController.java → submitExam()
 
         String seedClasses = """
             INSERT OR IGNORE INTO classes (id, name) VALUES
@@ -536,7 +531,8 @@ public class DatabaseManager {
             stmt.execute(seedAccountant);
             stmt.execute(seedEvents);
             stmt.execute(seedAnnouncements);
-            stmt.execute(seedGrades);
+            // Remove old hardcoded fake grades (Math/Science/History/English for student_id=1)
+            try { stmt.execute("DELETE FROM grades WHERE id IN (1,2,3,4) AND student_id = 1 AND subject IN ('Math','Science','History','English')"); } catch (Exception ignored) {}
             stmt.execute(seedClasses);
             stmt.execute(seedMedicalInventory);
 
